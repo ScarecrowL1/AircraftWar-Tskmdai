@@ -90,6 +90,7 @@ class EliteEnemy{
 
 class Boss{
     Boss(int locationX, int locationY, int speedX, int speedY, int hp):void
+    +shoot():List<AbstractBullet>
 }
 
 class HeroBullet {

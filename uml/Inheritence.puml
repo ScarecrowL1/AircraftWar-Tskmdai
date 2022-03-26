@@ -32,18 +32,19 @@ abstract class AbstractAircraft
     + AbstractAircraft(int locationX, int locationY, int speedX, int speedY, int hp):void
     + decreaseHp(int decrease):void
     + getHp():int
-    + {abstract} shoot():List<Bullet>
+    + {abstract} shoot():List<AbstractBullet>
  }
 
 abstract class AbstractBullet
 {
     - int power
-    + Bullet(int locationX, int locationY, int speedX, int speedY, int power):void
+    + AbstractBullet(int locationX, int locationY, int speedX, int speedY, int power):void
     + forward():void
 	+ getPower():int
 }
 abstract class AbstractProp{
-    - int value
+    +AbstractProp(int locationX, int locationY, int speedX, int speedY):void
+    +forward():void
 }
 FlyingObject <|-- AbstractAircraft
 FlyingObject <|-- AbstractBullet
@@ -51,9 +52,17 @@ FlyingObject <|-- AbstractProp
 
 AbstractAircraft <|-- HeroAircraft
 AbstractAircraft <|-- MobEnemy
+AbstractAircraft <|-- EliteEnemy
+AbstractAircraft <|-- Boss
 
 AbstractBullet <|-- HeroBullet
 AbstractBullet <|-- EnemyBullet
+
+AbstractProp <|-- HpSupply
+AbstractProp <|-- BombSupply
+AbstractProp <|-- FireSupply
+
+
 
 class HeroAircraft {
     - int shootNum
@@ -61,13 +70,26 @@ class HeroAircraft {
     - int direction
     + HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp):void
     + forward():void
-    + shoot():List<Bullet>
+    + shoot():List<AbstractBullet>
 }
 
 class MobEnemy {
     + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp):void
     + forward():void
-    + shoot():List<Bullet>
+    + shoot():List<AbstractBullet>
+}
+
+class EliteEnemy{
+    -shootNum
+    -power
+    -direction
+    +EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp):void
+    +shoot():List<AbstractBullet>
+    +forward()
+}
+
+class Boss{
+    Boss(int locationX, int locationY, int speedX, int speedY, int hp):void
 }
 
 class HeroBullet {
@@ -78,6 +100,18 @@ class HeroBullet {
 class EnemyBullet {
     + EnemyBullet(int locationX, int locationY,
      int speedX, int speedY, int power):void
+}
+
+class HpSupply{
+    + HpSupply(int locationX, int locationY, int speedX, int speedY):void
+}
+
+class BombSupply{
+    + BombSupply(int locationX, int locationY, int speedX, int speedY):void
+}
+
+class FireSupply{
+    + FireSupply(int locationX, int locationY, int speedX, int speedY):void
 }
 
 @enduml

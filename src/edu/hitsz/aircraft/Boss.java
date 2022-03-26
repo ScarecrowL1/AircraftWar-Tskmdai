@@ -10,6 +10,7 @@ public class Boss extends AbstractAircraft{
         super(locationX, locationY, speedX, speedY, hp);
     }
 
+    //暂时
     @Override
     public List<AbstractBullet> shoot() {
         return new LinkedList<>();

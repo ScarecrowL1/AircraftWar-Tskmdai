@@ -1,7 +1,7 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class FlyingObject
+abstract class AbstractFlyingObject
 {
     # int locationX
     # int locationY
@@ -12,9 +12,9 @@ abstract class FlyingObject
     # int height
     # boolean isValid
 
-    + FlyingObject(int locationX, int locationY, int speedX, int speedY):void
+    + AbstractFlyingObject(int locationX, int locationY, int speedX, int speedY)
     + forward():void
-    + crash(FlyingObject flyingObject):boolean
+    + crash(AbstractFlyingObject abstractflyingObject):boolean
     + setLocation(double locationX, double locationY):void
     + getLocationX():int
     + getLocationY():int
@@ -29,34 +29,35 @@ abstract class AbstractAircraft
 {
 	# int maxHp
     # int hp
-    + AbstractAircraft(int locationX, int locationY, int speedX, int speedY, int hp):void
+    + AbstractAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
     + decreaseHp(int decrease):void
     + getHp():int
-    + {abstract} shoot():List<AbstractBullet>
+    + {abstract} shoot():List<BaseBullet>
+    + dropProps()：AbstractProp
  }
 
-abstract class AbstractBullet
+abstract class BaseBullet
 {
     - int power
-    + AbstractBullet(int locationX, int locationY, int speedX, int speedY, int power):void
+    + BaseBullet(int locationX, int locationY, int speedX, int speedY, int power)
     + forward():void
 	+ getPower():int
 }
 abstract class AbstractProp{
-    +AbstractProp(int locationX, int locationY, int speedX, int speedY):void
+    +AbstractProp(int locationX, int locationY, int speedX, int speedY)
     +forward():void
 }
-FlyingObject <|-- AbstractAircraft
-FlyingObject <|-- AbstractBullet
-FlyingObject <|-- AbstractProp
+AbstractFlyingObject <|-- AbstractAircraft
+AbstractFlyingObject <|-- BaseBullet
+AbstractFlyingObject <|-- AbstractProp
 
 AbstractAircraft <|-- HeroAircraft
 AbstractAircraft <|-- MobEnemy
 AbstractAircraft <|-- EliteEnemy
 AbstractAircraft <|-- Boss
 
-AbstractBullet <|-- HeroBullet
-AbstractBullet <|-- EnemyBullet
+BaseBullet <|-- HeroBullet
+BaseBullet <|-- EnemyBullet
 
 AbstractProp <|-- HpSupply
 AbstractProp <|-- BombSupply
@@ -68,51 +69,53 @@ class HeroAircraft {
     - int shootNum
     - int power
     - int direction
-    + HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp):void
+    - {static}Abstractaircraft heroaircraft
+    + HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
     + forward():void
-    + shoot():List<AbstractBullet>
+    + shoot():List<BaseBullet>
+    + {static}getHeroAircraft():HeroAircraft
 }
 
 class MobEnemy {
-    + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp):void
+    + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
     + forward():void
-    + shoot():List<AbstractBullet>
+    + shoot():List<BaseBullet>
 }
 
 class EliteEnemy{
     -shootNum
     -power
     -direction
-    +EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp):void
-    +shoot():List<AbstractBullet>
+    +EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    +shoot():List<BaseBullet>
     +forward()
 }
 
 class Boss{
-    Boss(int locationX, int locationY, int speedX, int speedY, int hp):void
-    +shoot():List<AbstractBullet>
+    +Boss(int locationX, int locationY, int speedX, int speedY, int hp)
+    +shoot():List<BaseBullet>
 }
 
 class HeroBullet {
     + HeroBullet(int locationX, int locationY,
-     int speedX, int speedY, int power):void
+     int speedX, int speedY, int power)
 }
 
 class EnemyBullet {
     + EnemyBullet(int locationX, int locationY,
-     int speedX, int speedY, int power):void
+     int speedX, int speedY, int power)
 }
 
 class HpSupply{
-    + HpSupply(int locationX, int locationY, int speedX, int speedY):void
+    + HpSupply(int locationX, int locationY, int speedX, int speedY)
 }
 
 class BombSupply{
-    + BombSupply(int locationX, int locationY, int speedX, int speedY):void
+    + BombSupply(int locationX, int locationY, int speedX, int speedY)
 }
 
 class FireSupply{
-    + FireSupply(int locationX, int locationY, int speedX, int speedY):void
+    + FireSupply(int locationX, int locationY, int speedX, int speedY)
 }
 
 @enduml

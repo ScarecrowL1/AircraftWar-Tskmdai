@@ -1,9 +1,11 @@
 package edu.hitsz.aircraft;
 
-import edu.hitsz.bullet.AbstractBullet;
-import edu.hitsz.basic.FlyingObject;
+import edu.hitsz.bullet.BaseBullet;
+import edu.hitsz.basic.AbstractFlyingObject;
+import edu.hitsz.prop.*;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * 所有种类飞机的抽象父类：
@@ -11,7 +13,7 @@ import java.util.List;
  *
  * @author hitsz
  */
-public abstract class AbstractAircraft extends FlyingObject {
+public abstract class AbstractAircraft extends AbstractFlyingObject {
     /**
      * 生命值
      */
@@ -43,7 +45,31 @@ public abstract class AbstractAircraft extends FlyingObject {
      *  可射击对象需实现，返回子弹
      *  非可射击对象空实现，返回null
      */
-    public abstract List<AbstractBullet> shoot();
+    public abstract List<BaseBullet> shoot();
+
+    //用于掉落道具
+    public AbstractProp dropProps(){
+        PropFactory propFactory;
+        AbstractProp prop = null;
+        Random rand = new Random();
+        int type = rand.nextInt(3);//生成0、1、2三者其一
+        //生成血量道具
+        if(type == 0){
+            propFactory = new HpFactory();
+            prop = propFactory.createProp(locationX, locationY);
+        }
+        //生成火力道具
+        if(type == 1){
+            propFactory = new FireFactory();
+            prop = propFactory.createProp(locationX, locationY);
+        }
+        //生成炸弹道具
+        if(type == 2){
+            propFactory = new BombFactory();
+            prop = propFactory.createProp(locationX, locationY);
+        }
+        return prop;
+    }
 
 }
 

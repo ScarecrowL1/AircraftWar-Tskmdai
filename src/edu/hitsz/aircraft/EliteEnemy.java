@@ -1,11 +1,13 @@
 package edu.hitsz.aircraft;
 
 import edu.hitsz.application.Main;
-import edu.hitsz.bullet.AbstractBullet;
+import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.bullet.EnemyBullet;
+import edu.hitsz.prop.*;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class  EliteEnemy extends AbstractAircraft{
 
@@ -18,18 +20,18 @@ public class  EliteEnemy extends AbstractAircraft{
     }
 
     @Override
-    public List<AbstractBullet> shoot() {
-        List<AbstractBullet> res = new LinkedList<>();
+    public List<BaseBullet> shoot() {
+        List<BaseBullet> res = new LinkedList<>();
         int x = this.getLocationX();
         int y = this.getLocationY() + direction*2;
         int speedX = 0;
         int speedY = this.getSpeedY() + direction*10;//0324：更改了子弹的速度，原为*5.
-        AbstractBullet abstractBullet;
+        BaseBullet baseBullet;
         for(int i=0; i<shootNum; i++){
             // 子弹发射位置相对飞机位置向前偏移
             // 多个子弹横向分散
-            abstractBullet = new EnemyBullet(x + (i*2 - shootNum + 1)*10, y, speedX, speedY, power);
-            res.add(abstractBullet);
+            baseBullet = new EnemyBullet(x + (i*2 - shootNum + 1)*10, y, speedX, speedY, power);
+            res.add(baseBullet);
         }
         return res;
     }
@@ -43,4 +45,5 @@ public class  EliteEnemy extends AbstractAircraft{
             vanish();
         }
     }
+
 }

@@ -1,6 +1,8 @@
 package edu.hitsz.aircraft;
 
-import edu.hitsz.bullet.AbstractBullet;
+import edu.hitsz.application.ImageManager;
+import edu.hitsz.application.Main;
+import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.bullet.HeroBullet;
 
 import java.util.LinkedList;
@@ -11,6 +13,8 @@ import java.util.List;
  * @author hitsz
  */
 public class HeroAircraft extends AbstractAircraft {
+
+    private volatile static HeroAircraft heroAircraft;
 
     /** 攻击方式 */
     private int shootNum = 1;     //子弹一次发射数量
@@ -24,8 +28,25 @@ public class HeroAircraft extends AbstractAircraft {
      * @param speedY 英雄机射出的子弹的基准速度（英雄机无特定速度）
      * @param hp    初始生命值
      */
-    public HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp) {
+    private HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);
+    }
+
+    //单例模式创建英雄级（双从检查锁定）
+    public static HeroAircraft getHeroAircraft(){
+        if (heroAircraft == null){
+            synchronized (HeroAircraft.class){
+                if(heroAircraft == null) {
+                    heroAircraft = new HeroAircraft(
+                            Main.WINDOW_WIDTH / 2,
+                            Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight() ,
+                            0,
+                            0,
+                            100);
+                }
+            }
+        }
+        return heroAircraft;
     }
 
     @Override
@@ -38,18 +59,18 @@ public class HeroAircraft extends AbstractAircraft {
      * 通过射击产生子弹
      * @return 射击出的子弹List
      */
-    public List<AbstractBullet> shoot() {
-        List<AbstractBullet> res = new LinkedList<>();
+    public List<BaseBullet> shoot() {
+        List<BaseBullet> res = new LinkedList<>();
         int x = this.getLocationX();
         int y = this.getLocationY() + direction*2;
         int speedX = 0;
         int speedY = this.getSpeedY() + direction*15;//0324：更改了子弹的速度，原为*5.
-        AbstractBullet abstractBullet;
+        BaseBullet baseBullet;
         for(int i=0; i<shootNum; i++){
             // 子弹发射位置相对飞机位置向前偏移
             // 多个子弹横向分散
-            abstractBullet = new HeroBullet(x + (i*2 - shootNum + 1)*10, y, speedX, speedY, power);
-            res.add(abstractBullet);
+            baseBullet = new HeroBullet(x + (i*2 - shootNum + 1)*10, y, speedX, speedY, power);
+            res.add(baseBullet);
         }
         return res;
     }

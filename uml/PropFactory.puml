@@ -1,0 +1,44 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface PropFactory{
++ createProp():AbstractProp
+}
+
+
+PropFactory <|-- BombFactory
+PropFactory <|-- FireFactory
+PropFactory <|-- HpFactory
+
+AbstractProp <|-- HpSupply
+AbstractProp <|-- BombSupply
+AbstractProp <|-- FireSupply
+
+game ..|> PropFactory
+game ..|> AbstractProp
+
+class HpSupply{
+    + HpSupply(int locationX, int locationY, int speedX, int speedY)
+}
+
+class BombSupply{
+    + BombSupply(int locationX, int locationY, int speedX, int speedY)
+}
+
+class FireSupply{
+    + FireSupply(int locationX, int locationY, int speedX, int speedY)
+}
+
+class BombFactory {
++ createProp():AbstractProp
+}
+
+class FireFactory{
++ createProp():AbstractProp
+}
+
+class HpFactory{
++ createProp():AbstractProp
+}
+
+@enduml

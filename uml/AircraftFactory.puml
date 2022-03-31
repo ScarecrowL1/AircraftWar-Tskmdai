@@ -1,0 +1,45 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface AircraftFactory{
+    +createAircraft():AbstractAircraft
+}
+
+
+AbstractAircraft <|-- MobEnemy
+AbstractAircraft <|-- EliteEnemy
+
+
+AircraftFactory <|-- MobFactory
+AircraftFactory <|-- EliteFactory
+
+game ..|> AircraftFactory
+game ..|> AbstractAircraft
+
+class game
+
+class MobEnemy {
+    + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward():void
+    + shoot():List<BaseBullet>
+}
+
+class EliteEnemy{
+    -shootNum
+    -power
+    -direction
+    +EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    +shoot():List<BaseBullet>
+    +forward()
+}
+
+
+class EliteFactory {
++ createAircraft():AbstractAircraft
+}
+
+class MobFactory{
++ createAircraft():AbstractAircraft
+}
+
+@enduml

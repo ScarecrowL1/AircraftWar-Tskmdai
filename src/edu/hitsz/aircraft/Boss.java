@@ -1,6 +1,6 @@
 package edu.hitsz.aircraft;
 
-import edu.hitsz.bullet.AbstractBullet;
+import edu.hitsz.bullet.BaseBullet;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,7 +12,7 @@ public class Boss extends AbstractAircraft{
 
     //暂时
     @Override
-    public List<AbstractBullet> shoot() {
+    public List<BaseBullet> shoot() {
         return new LinkedList<>();
     }
 }

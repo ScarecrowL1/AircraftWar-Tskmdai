@@ -46,6 +46,8 @@ abstract class BaseBullet
 abstract class AbstractProp{
     +AbstractProp(int locationX, int locationY, int speedX, int speedY)
     +forward():void
+    +{abstract} activate (AbstractAircraft):void
+
 }
 AbstractFlyingObject <|-- AbstractAircraft
 AbstractFlyingObject <|-- BaseBullet

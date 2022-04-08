@@ -32,7 +32,7 @@ public class HeroAircraft extends AbstractAircraft {
         super(locationX, locationY, speedX, speedY, hp);
     }
 
-    //单例模式创建英雄级（双从检查锁定）
+    //单例模式创建英雄级（双重检查锁定）
     public static HeroAircraft getHeroAircraft(){
         if (heroAircraft == null){
             synchronized (HeroAircraft.class){

@@ -1,5 +1,6 @@
 package edu.hitsz.prop;
 
+import edu.hitsz.aircraft.AbstractAircraft;
 import edu.hitsz.application.Main;
 import edu.hitsz.basic.AbstractFlyingObject;
 
@@ -25,4 +26,6 @@ public abstract class AbstractProp extends AbstractFlyingObject {
             vanish();
         }
     }
+
+    public abstract void activate(AbstractAircraft aircraft);
 }

@@ -90,8 +90,8 @@ public class Game extends JPanel {
                     enemyAircrafts.add(aircraftFactory.createAircraft());
 
                     //开始决定是否生成精英机
-                    double pr_elite = Math.random();//pr_elite:为0~1之间的随机数
-                    if(pr_elite < 0.1){             //产生精英敌机的概率为10%
+                    double prElite = Math.random();//prElite:为0~1之间的随机数
+                    if(prElite < 0.1){             //产生精英敌机的概率为10%
                         aircraftFactory = new EliteFactory();
                         enemyAircrafts.add(aircraftFactory.createAircraft());
                     }
@@ -189,14 +189,14 @@ public class Game extends JPanel {
      */
     private void crashCheckAction() {
         // TODO 敌机子弹攻击英雄 done
-        for(BaseBullet bullet_enemy : enemyBullets){
-            if(bullet_enemy.notValid()){
+        for(BaseBullet bulletEnemy : enemyBullets){
+            if(bulletEnemy.notValid()){
                 continue;
             }
-            if(heroAircraft.crash(bullet_enemy)){
+            if(heroAircraft.crash(bulletEnemy)){
                 //0326  英雄机撞击敌机子弹，损失一定生命值
-                heroAircraft.decreaseHp(bullet_enemy.getPower());
-                bullet_enemy.vanish();
+                heroAircraft.decreaseHp(bulletEnemy.getPower());
+                bulletEnemy.vanish();
             }
         }
         // 英雄子弹攻击敌机
@@ -217,8 +217,8 @@ public class Game extends JPanel {
                     bullet.vanish();
                     if (enemyAircraft.notValid()) {
                         // TODO 获得分数，产生道具补给
-                        double pr_prop = Math.random();//pr_prop来实现概率获得道具，为0~1之间的随机数
-                        if(pr_prop <0.2){
+                        double prProp = Math.random();//pr_prop来实现概率获得道具，为0~1之间的随机数
+                        if(prProp <0.2){
                             props.add(enemyAircraft.dropProps());//备注：将之前生成道具的代码功能转移到AbstractAircraft类中实现
                         }
                         score += 10;
@@ -234,8 +234,9 @@ public class Game extends JPanel {
 
         // Todo: 我方获得道具，道具生效
         for(AbstractProp prop : props){
-            if(prop.notValid())
+            if(prop.notValid()) {
                 continue;
+            }
             if(heroAircraft.crash(prop)){
                 prop.activate(heroAircraft); //0408 将道具生效方法转移到道具类
                 prop.vanish();

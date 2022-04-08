@@ -237,25 +237,8 @@ public class Game extends JPanel {
             if(prop.notValid())
                 continue;
             if(heroAircraft.crash(prop)){
-                //拾取生命道具
-                //hp+50
-                if(prop instanceof HpSupply){
-                    System.out.println("HpSupply Active");
-                    heroAircraft.decreaseHp(-50);
-                    prop.vanish();
-                    continue;
-                }
-                //拾取炸弹道具
-                if(prop instanceof BombSupply){
-                    System.out.println("BombSupply Active");
-                    prop.vanish();
-                    continue;
-                }
-                //拾取火力道具
-                if(prop instanceof FireSupply){
-                    System.out.println("FireSupply Active");
-                    prop.vanish();
-                }
+                prop.activate(heroAircraft); //0408 将道具生效方法转移到道具类
+                prop.vanish();
             }
         }
     }

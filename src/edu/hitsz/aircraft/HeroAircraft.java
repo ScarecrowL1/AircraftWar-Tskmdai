@@ -23,6 +23,7 @@ public class HeroAircraft extends AbstractAircraft {
     //子弹伤害
     private int direction = -1;
     //子弹射击方向 (向上发射：1，向下发射：-1)
+    private int type = 1;
 
     /**
      * @param locationX 英雄机位置x坐标
@@ -46,6 +47,7 @@ public class HeroAircraft extends AbstractAircraft {
                             0,
                             0,
                             1000);
+                    heroAircraft.setShootStrategy(new Scatter());
                 }
             }
         }
@@ -63,21 +65,11 @@ public class HeroAircraft extends AbstractAircraft {
      * @return 射击出的子弹List
      */
     public List<BaseBullet> shoot() {
-        List<BaseBullet> res = new LinkedList<>();
-        int x = this.getLocationX();
-        int y = this.getLocationY() + direction*2;
-        int speedX = 0;
-        int speedY = this.getSpeedY() + direction*20;
-        //0324：更改了子弹的速度，原为*5.
-        //0415：更改了子弹的速度，上一次为*15
-        BaseBullet baseBullet;
-        for(int i=0; i<shootNum; i++){
-            // 子弹发射位置相对飞机位置向前偏移
-            // 多个子弹横向分散
-            baseBullet = new HeroBullet(x + (i*2 - shootNum + 1)*10, y, speedX, speedY, power);
-            res.add(baseBullet);
-        }
-        return res;
+        return shootStrategy.doShoot(heroAircraft, shootNum, power, type);
     }
 
+    @Override
+    public int getDirection() {
+        return direction;
+    }
 }

@@ -22,6 +22,7 @@ class EliteEnemyTest {
     @BeforeEach
     void setUp() {
         Elite = new EliteEnemy(1,1,1,1,50);
+        Elite.shootStrategy = new Straight();
     }
 
     @AfterEach
@@ -32,7 +33,7 @@ class EliteEnemyTest {
     @Test
     @DisplayName("掉落道具检测")
     void dropProps() {
-        assertTrue(Elite.dropProps() instanceof AbstractProp);
+        assertFalse(Elite.dropProps().isEmpty());
     }
 
     @Test

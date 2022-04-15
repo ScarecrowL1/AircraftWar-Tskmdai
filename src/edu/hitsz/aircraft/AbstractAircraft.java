@@ -20,6 +20,8 @@ public abstract class AbstractAircraft extends AbstractFlyingObject {
      */
     protected int maxHp;
     protected int hp;
+    protected int dierction;
+    protected ShootStrategy shootStrategy;
 
     public AbstractAircraft(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY);
@@ -76,6 +78,14 @@ public abstract class AbstractAircraft extends AbstractFlyingObject {
         }
         res.add(prop);
         return res;
+    }
+
+    public void setShootStrategy(ShootStrategy shootStrategy) {
+        this.shootStrategy = shootStrategy;
+    }
+
+    public int getDirection(){
+        return dierction;
     }
 
 }

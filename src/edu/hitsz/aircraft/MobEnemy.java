@@ -34,4 +34,9 @@ public class MobEnemy extends AbstractAircraft {
         return new LinkedList<>();
     }
 
+    @Override
+    public List<AbstractProp> dropProps() {
+        return new LinkedList<>();
+        //普通机不掉道具
+    }
 }

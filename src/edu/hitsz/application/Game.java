@@ -90,8 +90,9 @@ public class Game extends JPanel {
                     enemyAircrafts.add(aircraftFactory.createAircraft());
 
                     //开始决定是否生成精英机
-                    double prElite = Math.random();//prElite:为0~1之间的随机数
-                    if(prElite < 0.1){             //产生精英敌机的概率为10%
+                    double prElite = 0.2;
+                    //prElite:产生精英敌机的概率
+                    if(Math.random() < prElite){
                         aircraftFactory = new EliteFactory();
                         enemyAircrafts.add(aircraftFactory.createAircraft());
                     }
@@ -153,7 +154,8 @@ public class Game extends JPanel {
 
     private void shootAction() {
         // TODO 敌机射击 done
-        for(AbstractAircraft enemy: enemyAircrafts){                            //0325
+        for(AbstractAircraft enemy: enemyAircrafts){
+            //0325
             enemyBullets.addAll(enemy.shoot());
         }
         // 英雄射击
@@ -217,9 +219,11 @@ public class Game extends JPanel {
                     bullet.vanish();
                     if (enemyAircraft.notValid()) {
                         // TODO 获得分数，产生道具补给
-                        double prProp = Math.random();//pr_prop来实现概率获得道具，为0~1之间的随机数
-                        if(prProp <0.2){
-                            props.add(enemyAircraft.dropProps());//备注：将之前生成道具的代码功能转移到AbstractAircraft类中实现
+                        double prProp = 0.8;
+                        //prProp为产生道具的概率
+                        if(Math.random() < prProp){
+                            props.addAll(enemyAircraft.dropProps());
+                            //备注：将之前生成道具的代码功能转移到AbstractAircraft类中实现
                         }
                         score += 10;
                     }
@@ -238,7 +242,8 @@ public class Game extends JPanel {
                 continue;
             }
             if(heroAircraft.crash(prop)){
-                prop.activate(heroAircraft); //0408 将道具生效方法转移到道具类
+                prop.activate(heroAircraft);
+                //0408 将道具生效方法转移到道具类
                 prop.vanish();
             }
         }
@@ -256,7 +261,8 @@ public class Game extends JPanel {
         enemyBullets.removeIf(AbstractFlyingObject::notValid);
         heroBullets.removeIf(AbstractFlyingObject::notValid);
         enemyAircrafts.removeIf(AbstractFlyingObject::notValid);
-        props.removeIf(AbstractFlyingObject::notValid); //删除无效的道具
+        props.removeIf(AbstractFlyingObject::notValid);
+        //删除无效的道具
     }
 
 

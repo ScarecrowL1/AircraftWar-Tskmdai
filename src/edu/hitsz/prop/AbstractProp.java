@@ -16,7 +16,6 @@ public abstract class AbstractProp extends AbstractFlyingObject {
     @Override
     public void forward() {
         super.forward();
-
         // 判定 y 轴出界
         if (speedY > 0 && locationY >= Main.WINDOW_HEIGHT ) {
             // 向下飞行出界

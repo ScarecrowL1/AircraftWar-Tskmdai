@@ -7,6 +7,6 @@ public class BombFactory implements PropFactory{
                 locationX,
                 locationY,
                 3,
-                1);
+                3);
     }
 }

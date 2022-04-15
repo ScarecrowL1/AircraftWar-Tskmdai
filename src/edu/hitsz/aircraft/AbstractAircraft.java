@@ -4,6 +4,7 @@ import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.prop.*;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -47,12 +48,17 @@ public abstract class AbstractAircraft extends AbstractFlyingObject {
      */
     public abstract List<BaseBullet> shoot();
 
-    //用于掉落道具
-    public AbstractProp dropProps(){
+    /**
+     * 掉落道具方法
+     * @return
+     */
+    public List<AbstractProp> dropProps(){
+        List<AbstractProp> res = new LinkedList<>();
         PropFactory propFactory;
         AbstractProp prop = null;
         Random rand = new Random();
-        int type = rand.nextInt(3);//生成0、1、2三者其一
+        int type = rand.nextInt(3);
+        //生成0、1、2三者其一
         //生成血量道具
         if(type == 0){
             propFactory = new HpFactory();
@@ -68,7 +74,8 @@ public abstract class AbstractAircraft extends AbstractFlyingObject {
             propFactory = new BombFactory();
             prop = propFactory.createProp(locationX, locationY);
         }
-        return prop;
+        res.add(prop);
+        return res;
     }
 
 }

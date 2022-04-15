@@ -17,9 +17,12 @@ public class HeroAircraft extends AbstractAircraft {
     private volatile static HeroAircraft heroAircraft;
 
     /** 攻击方式 */
-    private int shootNum = 1;     //子弹一次发射数量
-    private int power = 30;       //子弹伤害
-    private int direction = -1;  //子弹射击方向 (向上发射：1，向下发射：-1)
+    private int shootNum = 1;
+    //子弹一次发射数量
+    private int power = 30;
+    //子弹伤害
+    private int direction = -1;
+    //子弹射击方向 (向上发射：1，向下发射：-1)
 
     /**
      * @param locationX 英雄机位置x坐标
@@ -42,7 +45,7 @@ public class HeroAircraft extends AbstractAircraft {
                             Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight() ,
                             0,
                             0,
-                            100);
+                            1000);
                 }
             }
         }
@@ -64,7 +67,9 @@ public class HeroAircraft extends AbstractAircraft {
         int x = this.getLocationX();
         int y = this.getLocationY() + direction*2;
         int speedX = 0;
-        int speedY = this.getSpeedY() + direction*15;//0324：更改了子弹的速度，原为*5.
+        int speedY = this.getSpeedY() + direction*20;
+        //0324：更改了子弹的速度，原为*5.
+        //0415：更改了子弹的速度，上一次为*15
         BaseBullet baseBullet;
         for(int i=0; i<shootNum; i++){
             // 子弹发射位置相对飞机位置向前偏移

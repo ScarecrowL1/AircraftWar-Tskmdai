@@ -11,7 +11,8 @@ public class MobFactory implements AircraftFactory{
                 (int) ( Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth()))*1,
                 (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2)*1,
                 0,
-                8,
+                5,
                 30);
+        //0415修改了敌机速度，原为8  现为5
     }
 }

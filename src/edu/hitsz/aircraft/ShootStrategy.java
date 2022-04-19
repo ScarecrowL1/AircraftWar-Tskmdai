@@ -5,5 +5,6 @@ import edu.hitsz.bullet.BaseBullet;
 import java.util.List;
 
 public interface ShootStrategy {
-    public abstract List<BaseBullet> doShoot(AbstractAircraft aircraft, int shootNum, int power, int type);
+    List<BaseBullet> doShoot(HeroAircraft aircraft, int shootNum, int power);
+    List<BaseBullet> doShoot(EliteEnemy aircraft, int shootNum, int power);
 }

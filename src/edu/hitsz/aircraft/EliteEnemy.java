@@ -17,7 +17,6 @@ public class  EliteEnemy extends AbstractAircraft{
     //子弹伤害
     private int direction = 1;
     //子弹射击方向 (向上发射：1，向下发射：-1)
-    private int type = 2;
 
     public EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);
@@ -26,7 +25,7 @@ public class  EliteEnemy extends AbstractAircraft{
     @Override
     public List<BaseBullet> shoot() {
 
-        return shootStrategy.doShoot(this, shootNum, power, type);
+        return shootStrategy.doShoot(this, shootNum, power);
     }
 
 

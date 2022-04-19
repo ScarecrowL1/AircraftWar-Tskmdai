@@ -23,7 +23,6 @@ public class HeroAircraft extends AbstractAircraft {
     //子弹伤害
     private int direction = -1;
     //子弹射击方向 (向上发射：1，向下发射：-1)
-    private int type = 1;
 
     /**
      * @param locationX 英雄机位置x坐标
@@ -65,7 +64,7 @@ public class HeroAircraft extends AbstractAircraft {
      * @return 射击出的子弹List
      */
     public List<BaseBullet> shoot() {
-        return shootStrategy.doShoot(heroAircraft, shootNum, power, type);
+        return shootStrategy.doShoot(heroAircraft, shootNum, power);
     }
 
     @Override

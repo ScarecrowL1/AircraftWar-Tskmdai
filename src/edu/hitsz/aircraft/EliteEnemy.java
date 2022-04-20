@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class  EliteEnemy extends AbstractAircraft{
+public class  EliteEnemy extends EnemyAircraft{
 
     private int shootNum = 1;
     //子弹一次发射数量
@@ -24,7 +24,6 @@ public class  EliteEnemy extends AbstractAircraft{
 
     @Override
     public List<BaseBullet> shoot() {
-
         return shootStrategy.doShoot(this, shootNum, power);
     }
 
@@ -38,8 +37,4 @@ public class  EliteEnemy extends AbstractAircraft{
         }
     }
 
-    @Override
-    public int getDirection() {
-        return direction;
-    }
 }

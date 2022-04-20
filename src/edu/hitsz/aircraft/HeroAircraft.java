@@ -17,7 +17,7 @@ public class HeroAircraft extends AbstractAircraft {
     private volatile static HeroAircraft heroAircraft;
 
     /** 攻击方式 */
-    private int shootNum = 1;
+    private int shootNum = 5;
     //子弹一次发射数量
     private int power = 30;
     //子弹伤害
@@ -46,7 +46,7 @@ public class HeroAircraft extends AbstractAircraft {
                             0,
                             0,
                             1000);
-                    heroAircraft.setShootStrategy(new Scatter());
+                    heroAircraft.setShootStrategy(new Straight());
                 }
             }
         }
@@ -67,8 +67,12 @@ public class HeroAircraft extends AbstractAircraft {
         return shootStrategy.doShoot(heroAircraft, shootNum, power);
     }
 
-    @Override
-    public int getDirection() {
-        return direction;
+
+    public void setShootNum(int shootNum) {
+        this.shootNum = shootNum;
+    }
+
+    public int getShootNum(){
+        return  shootNum;
     }
 }

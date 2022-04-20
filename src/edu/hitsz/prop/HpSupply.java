@@ -1,6 +1,7 @@
 package edu.hitsz.prop;
 
 import edu.hitsz.aircraft.AbstractAircraft;
+import edu.hitsz.aircraft.HeroAircraft;
 
 public class HpSupply extends AbstractProp{
 
@@ -12,7 +13,7 @@ public class HpSupply extends AbstractProp{
     }
 
     @Override
-    public void activate(AbstractAircraft aircraft) {
+    public void activate(HeroAircraft aircraft) {
         System.out.println("HpSupply Activate");
         aircraft.decreaseHp(-value);
         //加20血

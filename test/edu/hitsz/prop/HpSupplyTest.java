@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HpSupplyTest {
 
-    private AbstractAircraft hero;
+    private HeroAircraft hero;
     private HpSupply HpProp;
 
     @BeforeEach

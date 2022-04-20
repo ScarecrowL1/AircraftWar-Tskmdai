@@ -37,8 +37,8 @@ public class Game extends JPanel {
     private final List<BaseBullet> enemyBullets;
     private final List<AbstractProp> props;
 
-    AircraftFactory aircraftFactory;//飞机工厂
-    PropFactory propFactory;
+    AircraftFactory aircraftFactory;
+    //飞机工厂
 
     private int enemyMaxNumber = 5;
 
@@ -51,6 +51,9 @@ public class Game extends JPanel {
      */
     private int cycleDuration = 600;
     private int cycleTime = 0;
+
+    private boolean canBuildBoss = true;
+    private int lastScore = 0;
 
 
     public Game() {
@@ -75,6 +78,7 @@ public class Game extends JPanel {
      */
     public void action() {
 
+
         // 定时任务：绘制、对象产生、碰撞判定、击毁及结束判定
         Runnable task = () -> {
 
@@ -85,6 +89,8 @@ public class Game extends JPanel {
                 System.out.println(time);
                 // 新敌机产生
                 if (enemyAircrafts.size() < enemyMaxNumber) {
+
+
                     //生成普通机
                     aircraftFactory = new MobFactory();
                     enemyAircrafts.add(aircraftFactory.createAircraft());
@@ -95,6 +101,15 @@ public class Game extends JPanel {
                     if(Math.random() < prElite){
                         aircraftFactory = new EliteFactory();
                         enemyAircrafts.add(aircraftFactory.createAircraft());
+                    }
+                    //Boss出现得分阈值，当此时分数大于上次记录时的分数，他们之差大于阈值时，将达成产生boss机的条件之一
+                    int bossScoreThreshold = 100;
+                    //初始化lastscore==0，每击败一次boss机，这个数值将记录击败boss机之前的分数
+                    if(( (score - lastScore) > bossScoreThreshold) && canBuildBoss){
+                         aircraftFactory = new BossFactory();
+                         enemyAircrafts.add(aircraftFactory.createAircraft());
+                         canBuildBoss = false;
+                         //场上只能有一架Boss机,当boss机被击落时，canBulidBoss将会变为true
                     }
                 }
                 // 飞机射出子弹
@@ -225,9 +240,16 @@ public class Game extends JPanel {
                             props.addAll(enemyAircraft.dropProps());
                             //备注：将之前生成道具的代码功能转移到AbstractAircraft类中实现
                         }
+                        //当被击毁敌机是Boss时，之后可以重新生成Boss
+                        //此时记录lastscore，重新计算出现阈值
+                        if(enemyAircraft instanceof Boss){
+                            canBuildBoss = true;
+                            lastScore = score;
+                        }
                         score += 10;
                     }
                 }
+
                 // 英雄机 与 敌机 相撞，均损毁
                 if (enemyAircraft.crash(heroAircraft) || heroAircraft.crash(enemyAircraft)) {
                     enemyAircraft.vanish();
@@ -294,7 +316,12 @@ public class Game extends JPanel {
         paintImageWithPositionRevised(g, heroBullets);
 
         paintImageWithPositionRevised(g, enemyAircrafts);
-        paintImageWithPositionRevised(g,props);//绘制道具
+
+        paintImageWithPositionRevised(g,props);
+        //绘制道具
+
+
+
 
         g.drawImage(ImageManager.HERO_IMAGE, heroAircraft.getLocationX() - ImageManager.HERO_IMAGE.getWidth() / 2,
                 heroAircraft.getLocationY() - ImageManager.HERO_IMAGE.getHeight() / 2, null);

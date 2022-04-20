@@ -84,9 +84,6 @@ public abstract class AbstractAircraft extends AbstractFlyingObject {
         this.shootStrategy = shootStrategy;
     }
 
-    public int getDirection(){
-        return dierction;
-    }
 
 }
 

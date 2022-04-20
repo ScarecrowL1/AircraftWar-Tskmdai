@@ -8,10 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Straight implements ShootStrategy{
+
+
     @Override
     public List<BaseBullet> doShoot(HeroAircraft aircraft, int shootNum, int power) {
         List<BaseBullet> bullets = new ArrayList<>();
-        int direction = aircraft.getDirection();
+        int direction = -1;
         int x = aircraft.getLocationX();
         int y = aircraft.getLocationY() + direction*2;
         int speedX = 0;
@@ -20,8 +22,6 @@ public class Straight implements ShootStrategy{
         //0415：更改了子弹的速度，上一次为*15
 
         //生成子弹，
-        // type == 1 英雄机子弹
-        // type == 2 敌机子弹
         for(int i=0; i<shootNum; i++) {
             bullets.add(new HeroBullet(x + (i * 2 - shootNum + 1) * 10, y, speedX, speedY, power));
         }
@@ -31,9 +31,9 @@ public class Straight implements ShootStrategy{
 
 
 @Override
-    public List<BaseBullet> doShoot(EliteEnemy aircraft, int shootNum, int power) {
+    public List<BaseBullet> doShoot(EnemyAircraft aircraft, int shootNum, int power) {
         List<BaseBullet> bullets = new ArrayList<>();
-        int direction = aircraft.getDirection();
+        int direction = 1;
         int x = aircraft.getLocationX();
         int y = aircraft.getLocationY() + direction*2;
         int speedX = 0;
@@ -42,8 +42,6 @@ public class Straight implements ShootStrategy{
         //0415：更改了子弹的速度，上一次为*15
 
         //生成子弹，
-        // type == 1 英雄机子弹
-        // type == 2 敌机子弹
         for(int i=0; i<shootNum; i++) {
             speedY = aircraft.getSpeedY() + direction*10;
             //敌机子弹不能过快

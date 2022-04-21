@@ -26,9 +26,9 @@ public class DAOimpl implements ScoreDAO {
             BufferedWriter bw = new BufferedWriter(new FileWriter("./src/userdata.txt"));
             bw.write("*********************   排行榜    *************************");
             bw.newLine();
-            bw.write("*********                                                        *********");
+            bw.write("*********                                        *********");
             bw.newLine();
-            bw.write("***** name ************ score *** time ******* date ****");
+            bw.write("***** name ************ score *** time ******* date ******");
             bw.newLine();
             bw.write("____________________________________________________________");
             bw.newLine();
@@ -36,6 +36,7 @@ public class DAOimpl implements ScoreDAO {
             //rank排名，写入时依次赋予
             for (UserData ud : userDataList) {
                 StringBuilder sb = new StringBuilder();
+                //division为四个空格
                 sb.append(++rank).append(division)
                         .append(ud.getID()).append(division)
                         .append(ud.getScore()).append(division)

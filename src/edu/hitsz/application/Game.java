@@ -8,6 +8,7 @@ import edu.hitsz.prop.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.*;
@@ -137,11 +138,21 @@ public class Game extends JPanel {
             // 游戏结束检查
             if (heroAircraft.getHp() <= 0) {
                 // 游戏结束
+                DAOimpl dao = new DAOimpl();
+                //读入文件数据
+                dao.doRead();
+                //假如本次游戏的数据
+                dao.doAdd(score, time / 1000.0);
+                //重新进行排列
+                dao.doRank();
+                //保存排列好的数据
+                dao.doSave();
                 executorService.shutdown();
                 gameOverFlag = true;
                 System.out.println("Game Over!");
+                //打印排行榜到控制台
+                dao.printToConsole();
             }
-
         };
 
         /**

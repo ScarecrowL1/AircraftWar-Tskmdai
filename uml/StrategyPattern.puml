@@ -1,0 +1,30 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+abstract AbstractAircraft
+{
+    #ShootStrategy shootStrategy
+    +shoot():List<BaseBullet>:void
+    +setStrategy(strategy):void
+}
+
+interface ShootStrategy{
+    +doShoot(HeroAircraft aircraft, int shootNum, int power):List<BaseBullet>
+    +doShoot(EnemyAircraft aircraft, int shootNum, int power):List<BaseBullet>
+}
+
+class Scatter{
+    +doShoot(HeroAircraft aircraft, int shootNum, int power):List<BaseBullet>
+    +doShoot(EnemyAircraft aircraft, int shootNum, int power):List<BaseBullet>
+}
+
+class Straight{
+    +doShoot(HeroAircraft aircraft, int shootNum, int power):List<BaseBullet>
+    +doShoot(EnemyAircraft aircraft, int shootNum, int power):List<BaseBullet>
+}
+
+AbstractAircraft o--> ShootStrategy
+Scatter ..|> ShootStrategy
+Straight ..|> ShootStrategy
+
+@enduml

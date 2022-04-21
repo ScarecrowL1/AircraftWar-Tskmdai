@@ -1,0 +1,46 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+
+interface ScoreDAO{
+    + doAdd(int score, double time):void
+    + doSave():void
+    + doRead():void
+    + doRank():void
+    + printToConsole():void
+
+}
+
+
+
+ScoreDAO <|.. DAOimpl
+UserData <-- DAOimpl
+game ..> DAOimpl
+
+
+
+class DAOimpl {
+    - userdata:List<UserData>
+    + doAdd(int score, double time):void
+    + doSave():void
+    + doRead():void
+    + doRank():void
+    + printToConsole():void
+
+}
+
+class UserData{
+    - ID : String
+    - score : int
+    - time : double
+    - dateInfo : String
+    + getScore():int
+    + getTime(): double
+    + getDateInfo(): String
+    + setScore():void
+    + setTime(): void
+    + setDateInfo(): void
+}
+
+@enduml

@@ -49,14 +49,18 @@ abstract class AbstractProp{
     +{abstract} activate (AbstractAircraft):void
 
 }
+
+abstract class EnemyAircraft
+
 AbstractFlyingObject <|-- AbstractAircraft
 AbstractFlyingObject <|-- BaseBullet
 AbstractFlyingObject <|-- AbstractProp
 
+AbstractAircraft <|-- EnemyAircraft
 AbstractAircraft <|-- HeroAircraft
-AbstractAircraft <|-- MobEnemy
-AbstractAircraft <|-- EliteEnemy
-AbstractAircraft <|-- Boss
+EnemyAircraft <|-- MobEnemy
+EnemyAircraft <|-- EliteEnemy
+EnemyAircraft <|-- Boss
 
 BaseBullet <|-- HeroBullet
 BaseBullet <|-- EnemyBullet

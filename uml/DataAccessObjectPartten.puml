@@ -16,7 +16,7 @@ interface ScoreDAO{
 
 ScoreDAO <|.. DAOimpl
 UserData <-- DAOimpl
-game ..> DAOimpl
+game ..> ScoreDAO
 
 
 

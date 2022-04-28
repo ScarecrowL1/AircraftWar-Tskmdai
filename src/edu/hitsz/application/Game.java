@@ -3,12 +3,16 @@ package edu.hitsz.application;
 import edu.hitsz.aircraft.*;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
+import edu.hitsz.dao.DAOimpl;
+import edu.hitsz.factory.AircraftFactory;
+import edu.hitsz.factory.BossFactory;
+import edu.hitsz.factory.EliteFactory;
+import edu.hitsz.factory.MobFactory;
 import edu.hitsz.prop.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.*;
@@ -97,7 +101,7 @@ public class Game extends JPanel {
                     enemyAircrafts.add(aircraftFactory.createAircraft());
 
                     //开始决定是否生成精英机
-                    double prElite = 0.2;
+                    double prElite = 0.4;
                     //prElite:产生精英敌机的概率
                     if(Math.random() < prElite){
                         aircraftFactory = new EliteFactory();
@@ -149,6 +153,9 @@ public class Game extends JPanel {
                 dao.doSave();
                 executorService.shutdown();
                 gameOverFlag = true;
+                synchronized (Main.LOCK) {
+                    Main.LOCK.notify();
+                }
                 System.out.println("Game Over!");
                 //打印排行榜到控制台
                 dao.printToConsole();
@@ -365,5 +372,7 @@ public class Game extends JPanel {
         g.drawString("LIFE:" + this.heroAircraft.getHp(), x, y);
     }
 
-
+    public boolean isGameOver() {
+        return gameOverFlag;
+    }
 }

@@ -34,6 +34,14 @@ public interface ScoreDAO {
      */
     void doRank();
 
+
+    /**
+     * 做删除
+     *通过日期信息的唯一性精确定位
+     * @param dateInfo 日期信息
+     */
+    void doDelete(String dateInfo);
+
     /**
      * 打印到控制台
      */

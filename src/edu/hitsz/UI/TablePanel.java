@@ -54,15 +54,21 @@ public class TablePanel {
         });
 
 
-        /*deleteButton.addActionListener(new ActionListener() {
+        deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int deleteRow = scoreTable.getSelectedRow();
                 if(deleteRow != -1){
+                    //通过日期信息的唯一性来定位应删除的元素
+                    String dateInfo = (String) scoreTable.getValueAt(deleteRow, 4);
+                    dao.doDelete(dateInfo);
+                    //重新排序并保存到本地
+                    dao.doRank();
+                    dao.doSave();
                     model.removeRow(deleteRow);
                 }
             }
-        });*/
+        });
     }
 
 

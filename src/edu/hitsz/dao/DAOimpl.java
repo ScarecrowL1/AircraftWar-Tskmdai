@@ -116,4 +116,16 @@ public class DAOimpl implements ScoreDAO {
     public List<UserData> getUserDataList() {
         return userDataList;
     }
+
+    @Override
+    public void doDelete(String dateInfo) {
+        Iterator<UserData> iterator = userDataList.iterator();
+        while (iterator.hasNext()) {
+            UserData next = iterator.next();
+            String dateInfo1 = next.getDateInfo();
+            if (dateInfo1.equals(dateInfo)) {
+                iterator.remove();
+            }
+        }
+    }
 }

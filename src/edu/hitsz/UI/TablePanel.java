@@ -7,6 +7,10 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class TablePanel {
@@ -16,6 +20,9 @@ public class TablePanel {
     private JPanel bottomPanel;
     private JButton deleteButton;
     private JScrollPane tableScroll;
+    private JTextField retextBar;
+    private JButton changeButton;
+    private JPanel retextPanel;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("TablePanel");
@@ -67,6 +74,27 @@ public class TablePanel {
                     dao.doSave();
                     model.removeRow(deleteRow);
                 }
+            }
+        });
+
+
+        changeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int index = scoreTable.getSelectedRow();
+                //自动修改：找出最近一次保存的记录，方法是以日期作为索引
+                if (index == -1) {
+                    String endTime = "0000-00-00 00:00:00";
+                    for(UserData userData : userDataList){
+                        if(userData.getDateInfo().compareTo(endTime)>0){
+                            endTime = userData.getDateInfo();
+                            index = userDataList.indexOf(userData);
+                        }
+                    }
+                }
+                userDataList.get(index).setID(retextBar.getText());
+                scoreTable.setValueAt(retextBar.getText(), index, 1);
+                dao.doSave();
             }
         });
     }

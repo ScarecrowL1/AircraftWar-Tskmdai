@@ -48,12 +48,16 @@ public class UserData implements Comparable<UserData>{
 
     /**
      * 按照分数比较
-     *
+     *当分数不同时，比较时间，时间小者排前
      * @return int
      */
     @Override
-    public int compareTo(UserData o) {
-        return (int) (o.getScore()-score);
+    public int compareTo(UserData ud) {
+        if(ud.getScore() == score){
+            //扩大计算精度，由于此类的time的单位为秒，所以不做此操作会产生误差
+            return (int) (time*1000 - ud.getTime()*1000);
+        }
+            return (int) (ud.getScore() - score);
     }
 
     public String getDateInfo() {

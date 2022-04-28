@@ -1,5 +1,6 @@
 package edu.hitsz.application;
 
+import edu.hitsz.UI.MainPanel;
 import edu.hitsz.aircraft.*;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
@@ -145,8 +146,8 @@ public class Game extends JPanel {
                 DAOimpl dao = new DAOimpl();
                 //读入文件数据
                 dao.doRead();
-                //假如本次游戏的数据
-                dao.doAdd(score, time / 1000.0);
+                //加入本次游戏的数据
+                dao.doAdd(score, time / 1000.0, MainPanel.getTextUserID());
                 //重新进行排列
                 dao.doRank();
                 //保存排列好的数据

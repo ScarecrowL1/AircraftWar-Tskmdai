@@ -6,14 +6,14 @@ import java.util.*;
 
 public class DAOimpl implements ScoreDAO {
 
-    List<UserData> userDataList = new LinkedList<>();
+    private static List<UserData> userDataList = new LinkedList<>();
     String division = "     ";
     //统一分隔
 
     @Override
-    public void doAdd(int score, double time) {
-        UserData userData = new UserData(score, time);
-        //生成第一次添加时的日期
+    public void doAdd(int score, double time, String ID) {
+        UserData userData = new UserData(score, time, ID);
+        //生成当次添加时的日期
         Date date = new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         userData.setDateInfo(df.format(date));
@@ -70,12 +70,15 @@ public class DAOimpl implements ScoreDAO {
                         continue;
                     }
                 String[] strArray = line.split(division);
+                String ID = strArray[1];
                 int score = Integer.parseInt(strArray[2]);
                 double time = Double.parseDouble(strArray[3]);
                 String dateInfo = strArray[4];
-                UserData ud = new UserData(score, time);
+                UserData ud = new UserData(score, time, ID);
                 //给之前的数据赋上之前的数据
                 ud.setDateInfo(dateInfo);
+
+                //将构建好的userData加入到表中
                 userDataList.add(ud);
             }
         }
@@ -108,5 +111,9 @@ public class DAOimpl implements ScoreDAO {
             e.printStackTrace();
         }
 
+    }
+
+    public List<UserData> getUserDataList() {
+        return userDataList;
     }
 }

@@ -2,12 +2,11 @@ package edu.hitsz.UI;
 
 import edu.hitsz.application.ImageManager;
 import edu.hitsz.application.Main;
+import edu.hitsz.dao.DAOimpl;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -18,9 +17,10 @@ public class MainPanel {
     private JButton normalButton;
     private JCheckBox soundCheckBox;
     private JPanel buttonPanel;
+    private JPanel textPanel;
+    private JFormattedTextField IDtextbar;
+    private static String textUserID =  "username";
 
-    public static final int WINDOW_WIDTH = 512;
-    public static final int WINDOW_HEIGHT = 768;
 
 /*    public static void main(String[] args) {
         JFrame frame = new JFrame("edu/hitsz/UI");
@@ -39,7 +39,12 @@ public class MainPanel {
         return mainPanel;
     }
 
+    public static String getTextUserID() {
+        return textUserID;
+    }
+
     public MainPanel() {
+
         easyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -51,7 +56,7 @@ public class MainPanel {
                 }
 
                 mainPanel.setVisible(false);
-                synchronized (Main.LOCK){
+                synchronized (Main.LOCK) {
                     Main.LOCK.notify();
                 }
             }
@@ -67,7 +72,7 @@ public class MainPanel {
                 }
 
                 mainPanel.setVisible(false);
-                synchronized (Main.LOCK){
+                synchronized (Main.LOCK) {
                     Main.LOCK.notify();
                 }
             }
@@ -83,7 +88,7 @@ public class MainPanel {
                 }
 
                 mainPanel.setVisible(false);
-                synchronized (Main.LOCK){
+                synchronized (Main.LOCK) {
                     Main.LOCK.notify();
                 }
             }
@@ -95,7 +100,11 @@ public class MainPanel {
             }
         });
 
-
-
+        IDtextbar.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                textUserID = IDtextbar.getText();
+            }
+        });
     }
 }

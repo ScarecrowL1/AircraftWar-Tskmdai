@@ -1,9 +1,8 @@
 package edu.hitsz.prop;
 
-import edu.hitsz.aircraft.AbstractAircraft;
 import edu.hitsz.aircraft.HeroAircraft;
-import edu.hitsz.aircraft.Scatter;
-import edu.hitsz.aircraft.Straight;
+import edu.hitsz.strategy.Scatter;
+import edu.hitsz.strategy.Straight;
 
 public class FireSupply extends AbstractProp{
     public FireSupply(int locationX, int locationY, int speedX, int speedY) {
@@ -12,19 +11,17 @@ public class FireSupply extends AbstractProp{
 
     @Override
     public void activate(HeroAircraft aircraft) {
-        //增加子弹数目
-        int shootNum = aircraft.getShootNum() + 1 ;
-        //改变子弹发射方式的概率prChange
-        double prChange = 0.5;
-        if(Math.random() < prChange){
-            //变为直射
-            aircraft.setShootStrategy(new Straight());
-        }
-        else {
-            //变为散射
-            aircraft.setShootStrategy(new Scatter());
-        }
-        aircraft.setShootNum(shootNum);
-        System.out.println("FireSupply Activate");
+
+        Runnable r = () ->{
+            try {
+                aircraft.setShootStrategy((new Scatter()));
+                //保持散射持续10秒
+                Thread.sleep(8000);
+                aircraft.setShootStrategy(new Straight());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
+        new Thread(r, "FireSupply").start();
     }
 }

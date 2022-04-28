@@ -1,5 +1,8 @@
 package edu.hitsz.application;
 
+import edu.hitsz.UI.MainPanel;
+import edu.hitsz.UI.TablePanel;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,7 +15,11 @@ public class Main {
     public static final int WINDOW_WIDTH = 512;
     public static final int WINDOW_HEIGHT = 768;
 
+    public static final Object LOCK = new Object();
+    //public static final Object LOCK1 = new Object();
+
     public static void main(String[] args) {
+
 
         System.out.println("Hello Aircraft War");
 
@@ -24,11 +31,43 @@ public class Main {
         //设置窗口的大小和位置,居中放置
         frame.setBounds(((int) screenSize.getWidth() - WINDOW_WIDTH) / 2, 0,
                 WINDOW_WIDTH, WINDOW_HEIGHT);
+        JPanel mainPanel = new MainPanel().getMainPanel();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        //第一个界面，选择难度
+        frame.setContentPane(mainPanel);
+        frame.setVisible(true);
+
+        synchronized (LOCK){
+            while (mainPanel.isVisible()){
+                try {
+                    LOCK.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        frame.remove(mainPanel);
+
         Game game = new Game();
-        frame.add(game);
+        frame.setContentPane(game);
         frame.setVisible(true);
         game.action();
+
+        synchronized (LOCK){
+            while (!game.isGameOver()){
+                try {
+                    LOCK.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        frame.remove(game);
+        JPanel table = new TablePanel().getTablePanel();
+        frame.setContentPane(table);
+        frame.setVisible(true);
+
     }
 }

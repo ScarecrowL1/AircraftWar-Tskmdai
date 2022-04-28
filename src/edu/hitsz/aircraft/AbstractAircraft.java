@@ -2,7 +2,12 @@ package edu.hitsz.aircraft;
 
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
+import edu.hitsz.factory.BombFactory;
+import edu.hitsz.factory.FireFactory;
+import edu.hitsz.factory.HpFactory;
+import edu.hitsz.factory.PropFactory;
 import edu.hitsz.prop.*;
+import edu.hitsz.strategy.ShootStrategy;
 
 import java.util.LinkedList;
 import java.util.List;

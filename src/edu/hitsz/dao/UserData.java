@@ -1,15 +1,25 @@
 package edu.hitsz.dao;
 
+/**
+ * 用户数据
+ *
+ * @author ScarecrowLi
+ * @date 2022/04/28
+ */
 public class UserData implements Comparable<UserData>{
     public UserData(int score, double time) {
         setScore(score);
         setTime(time);
     }
-    private String ID = "Kamisato Ayaka";
+    public UserData(int score, double time, String ID) {
+        setScore(score);
+        setTime(time);
+        setID(ID);
+    }
+    private String ID;
     private int score;
     private double time;
     private String dateInfo;
-    private String mode;
 
     public int getScore() {
         return score;
@@ -30,6 +40,10 @@ public class UserData implements Comparable<UserData>{
 
     public void setTime(double time) {
         this.time = time;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
     /**

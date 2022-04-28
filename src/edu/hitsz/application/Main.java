@@ -67,6 +67,7 @@ public class Main {
         frame.remove(game);
         JPanel table = new TablePanel().getTablePanel();
         frame.setContentPane(table);
+        frame.setSize(1024, WINDOW_HEIGHT);
         frame.setVisible(true);
 
     }

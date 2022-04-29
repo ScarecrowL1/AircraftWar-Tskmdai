@@ -1,5 +1,6 @@
 package edu.hitsz.UI;
 
+import edu.hitsz.application.Game;
 import edu.hitsz.dao.DAOimpl;
 import edu.hitsz.dao.UserData;
 
@@ -20,9 +21,13 @@ public class TablePanel {
     private JPanel bottomPanel;
     private JButton deleteButton;
     private JScrollPane tableScroll;
-    private JTextField retextBar;
+    private JFormattedTextField retextBar;
     private JButton changeButton;
     private JPanel retextPanel;
+
+    private int currentIndex;
+    private boolean needSaved;
+    private static int gameMode;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("TablePanel");
@@ -43,6 +48,10 @@ public class TablePanel {
         scoreTable.setModel(model);
 
         DAOimpl dao = new DAOimpl();
+        dao.doRead();
+        dao.doAdd(Game.getCurrentScore(), Game.getCurrentTime(), MainPanel.getTextUserID());
+        dao.doRank();
+
         List<UserData> userDataList = dao.getUserDataList();
         int rank = 0;
         //将数据库中数据填入表中
@@ -50,6 +59,33 @@ public class TablePanel {
             Object[] data = {++rank, ud.getID(), ud.getScore(), ud.getTime(), ud.getDateInfo()};
             model.addRow(data);
         }
+
+        //找出最近一次保存的记录，方法是以日期作为索引
+        String endTime = "0000-00-00 00:00:00";
+        for(UserData userData : userDataList){
+            if(userData.getDateInfo().compareTo(endTime)>0){
+                endTime = userData.getDateInfo();
+                currentIndex = userDataList.indexOf(userData);
+            }
+        }
+
+        int res = JOptionPane.showConfirmDialog(
+                null,
+                "游戏结束！你的名次是第 "+(currentIndex+1)+" 名\n是否保存数据到本地？",
+                "游戏结束",JOptionPane.YES_NO_OPTION);
+        needSaved = (res == 0);
+
+        if(needSaved && !MainPanel.isUserTexted()){
+            JOptionPane.showMessageDialog(
+                    null,
+                    "发现你使用的是默认ID，如需保存并修改，请稍后在排行榜下输入栏修改",
+                    "游戏结束",JOptionPane.INFORMATION_MESSAGE);
+        }
+
+        if(needSaved){
+            dao.doSave();
+        }
+
 
         tableScroll.setViewportView(scoreTable);
 
@@ -73,6 +109,10 @@ public class TablePanel {
                     dao.doRank();
                     dao.doSave();
                     model.removeRow(deleteRow);
+                    for (int i =  deleteRow; i < scoreTable.getRowCount(); i++){
+                        int currRank = (int) scoreTable.getValueAt(i,0) - 1;
+                        scoreTable.setValueAt(currRank, i, 0);
+                    }
                 }
             }
         });
@@ -82,15 +122,10 @@ public class TablePanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int index = scoreTable.getSelectedRow();
+                //如果用户不选中指定行就点击按钮，则开始自动修改
                 //自动修改：找出最近一次保存的记录，方法是以日期作为索引
                 if (index == -1) {
-                    String endTime = "0000-00-00 00:00:00";
-                    for(UserData userData : userDataList){
-                        if(userData.getDateInfo().compareTo(endTime)>0){
-                            endTime = userData.getDateInfo();
-                            index = userDataList.indexOf(userData);
-                        }
-                    }
+                    index = currentIndex;
                 }
                 userDataList.get(index).setID(retextBar.getText());
                 scoreTable.setValueAt(retextBar.getText(), index, 1);
@@ -102,5 +137,9 @@ public class TablePanel {
 
     public JPanel getTablePanel() {
         return tablePanel;
+    }
+
+    public static void setGameMode(int gameMode) {
+        TablePanel.gameMode = gameMode;
     }
 }

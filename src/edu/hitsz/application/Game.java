@@ -51,6 +51,9 @@ public class Game extends JPanel {
     private boolean gameOverFlag = false;
     private int score = 0;
     private int time = 0;
+
+    private static int currentScore;
+    private static double currentTime;
     /**
      * 周期（ms)
      * 指示子弹的发射、敌机的产生频率
@@ -143,7 +146,7 @@ public class Game extends JPanel {
             // 游戏结束检查
             if (heroAircraft.getHp() <= 0) {
                 // 游戏结束
-                DAOimpl dao = new DAOimpl();
+                /*DAOimpl dao = new DAOimpl();
                 //读入文件数据
                 dao.doRead();
                 //加入本次游戏的数据
@@ -151,7 +154,9 @@ public class Game extends JPanel {
                 //重新进行排列
                 dao.doRank();
                 //保存排列好的数据
-                dao.doSave();
+                dao.doSave();*/
+                currentScore = score;
+                currentTime  = (time/1000.0);
                 executorService.shutdown();
                 gameOverFlag = true;
                 synchronized (Main.LOCK) {
@@ -159,7 +164,6 @@ public class Game extends JPanel {
                 }
                 System.out.println("Game Over!");
                 //打印排行榜到控制台
-                dao.printToConsole();
             }
         };
 
@@ -375,5 +379,13 @@ public class Game extends JPanel {
 
     public boolean isGameOver() {
         return gameOverFlag;
+    }
+
+    public static int getCurrentScore() {
+        return currentScore;
+    }
+
+    public static double getCurrentTime() {
+        return currentTime;
     }
 }

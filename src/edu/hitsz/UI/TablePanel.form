@@ -82,14 +82,14 @@
                   <text value="忘记提供身份？请在这里输入ID，程序将会自动修改您的记录"/>
                 </properties>
               </component>
-              <component id="c5989" class="javax.swing.JTextField" binding="retextBar">
+              <component id="18a89" class="javax.swing.JFormattedTextField" binding="retextBar">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
                 <properties>
-                  <text value=""/>
+                  <text value="username"/>
                 </properties>
               </component>
               <component id="2028a" class="javax.swing.JButton" binding="changeButton">

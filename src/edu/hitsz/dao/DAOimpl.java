@@ -21,9 +21,10 @@ public class DAOimpl implements ScoreDAO {
     }
 
     @Override
-    public void doSave(){
+    public void doSave(int gameMode){
+        String dataFile = findUserData(gameMode);
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("./src/userdata.txt"));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(dataFile));
             bw.write("*********************   排行榜    *************************");
             bw.newLine();
             bw.write("*********                                        *********");
@@ -54,9 +55,10 @@ public class DAOimpl implements ScoreDAO {
     }
 
     @Override
-    public void doRead() {
+    public void doRead(int gameMode) {
+        String dataFile = findUserData(gameMode);
         try {
-            File file = new File("./src/userdata.txt");
+            File file = new File(dataFile);
             if (!file.isFile()) {
                 file.createNewFile();
             }
@@ -85,6 +87,25 @@ public class DAOimpl implements ScoreDAO {
         catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 根据游戏模式的输入返回正确的本地文件路径
+     *
+     * @param gameMode 游戏模式
+     * @return {@link String}
+     */
+    private String findUserData(int gameMode) {
+        String dataFile;
+        switch (gameMode){
+            case 1 : dataFile = "./src/userdata_normal.txt";
+                break;
+            case 2 : dataFile = "./src/userdata_hard.txt";
+                break;
+            case 0 :
+            default: dataFile = "./src/userdata.txt";
+        }
+        return dataFile;
     }
 
     @Override

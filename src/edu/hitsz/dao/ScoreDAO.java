@@ -22,12 +22,12 @@ public interface ScoreDAO {
     /**
      * 保存到本地
      */
-    void doSave();
+    void doSave(int gameMode);
 
     /**
      * 从本地中读取
      */
-    void doRead();
+    void doRead(int gameMode);
 
     /**
      * 进行排名

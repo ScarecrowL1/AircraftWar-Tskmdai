@@ -22,6 +22,7 @@ public class MainPanel {
     private static String textUserID =  "username";
 
 
+
     /**
      * 检测用户在第一个界面是否输入了ID数据
      */
@@ -60,7 +61,8 @@ public class MainPanel {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-
+                //简单模式
+                TablePanel.setGameMode(0);
                 mainPanel.setVisible(false);
                 synchronized (Main.LOCK) {
                     Main.LOCK.notify();
@@ -76,7 +78,8 @@ public class MainPanel {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-
+                //普通模式
+                TablePanel.setGameMode(1);
                 mainPanel.setVisible(false);
                 synchronized (Main.LOCK) {
                     Main.LOCK.notify();
@@ -92,7 +95,8 @@ public class MainPanel {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-
+                //困难模式
+                TablePanel.setGameMode(2);
                 mainPanel.setVisible(false);
                 synchronized (Main.LOCK) {
                     Main.LOCK.notify();

@@ -24,32 +24,53 @@ public class TablePanel {
     private JFormattedTextField retextBar;
     private JButton changeButton;
     private JPanel retextPanel;
+    private JLabel tabelLabel;
 
     private int currentIndex;
     private boolean needSaved;
     private static int gameMode;
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         JFrame frame = new JFrame("TablePanel");
         frame.setContentPane(new TablePanel().tablePanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-    }
+    }*/
 
     public TablePanel() {
 
-        DefaultTableModel model = new DefaultTableModel();
+        DefaultTableModel model = new DefaultTableModel(){
+            @Override
+            //不能在界面直接修改数据
+            public boolean isCellEditable(int row,int column){
+                return false;
+            }
+        };
         model.addColumn("排名");
         model.addColumn("ID");
         model.addColumn("分数");
         model.addColumn("用时(s)");
         model.addColumn("日期");
         scoreTable.setModel(model);
+        String modeName;
+        switch (gameMode){
+            case 1 : modeName = "排行榜  (普通模式)";
+                break;
+            case 2 : modeName = "排行榜  (困难模式)";
+                break;
+            case 0 :
+            default: modeName = "排行榜  (简单模式)";
+        }
+
+        tabelLabel.setText(modeName);
 
         DAOimpl dao = new DAOimpl();
-        dao.doRead();
+        //从本地中获取历史数据
+        dao.doRead(gameMode);
+        //从Game中获取本次游戏的数据，进行添加
         dao.doAdd(Game.getCurrentScore(), Game.getCurrentTime(), MainPanel.getTextUserID());
+        //对所有数据进行排行
         dao.doRank();
 
         List<UserData> userDataList = dao.getUserDataList();
@@ -61,6 +82,7 @@ public class TablePanel {
         }
 
         //找出最近一次保存的记录，方法是以日期作为索引
+        //最近一次的记录即本次记录
         String endTime = "0000-00-00 00:00:00";
         for(UserData userData : userDataList){
             if(userData.getDateInfo().compareTo(endTime)>0){
@@ -69,34 +91,33 @@ public class TablePanel {
             }
         }
 
+        //显示排名，currentIndex从0数，所以显示的时候+1
         int res = JOptionPane.showConfirmDialog(
                 null,
-                "游戏结束！你的名次是第 "+(currentIndex+1)+" 名\n是否保存数据到本地？",
+                "游戏结束！你的名次是第 "+(currentIndex+1)+" 名\n" +
+                        "分数："+Game.getCurrentScore()+"分\n" +
+                        "是否保存数据到本地？",
                 "游戏结束",JOptionPane.YES_NO_OPTION);
+        //若点击“是”，needSaved = true
         needSaved = (res == 0);
 
         if(needSaved && !MainPanel.isUserTexted()){
             JOptionPane.showMessageDialog(
                     null,
                     "发现你使用的是默认ID，如需保存并修改，请稍后在排行榜下输入栏修改",
-                    "游戏结束",JOptionPane.INFORMATION_MESSAGE);
+                    "提示",JOptionPane.INFORMATION_MESSAGE);
         }
 
+        //若用户需要保存到本地，则保存到本地
         if(needSaved){
-            dao.doSave();
+            dao.doSave(gameMode);
         }
 
-
+        //设置滚动
         tableScroll.setViewportView(scoreTable);
 
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-            }
-        });
-
-
+        //对特定行的元素进行删除
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,8 +128,9 @@ public class TablePanel {
                     dao.doDelete(dateInfo);
                     //重新排序并保存到本地
                     dao.doRank();
-                    dao.doSave();
+                    dao.doSave(gameMode);
                     model.removeRow(deleteRow);
+                    //在表层显示上，再被删除元素一下的数据排名+1
                     for (int i =  deleteRow; i < scoreTable.getRowCount(); i++){
                         int currRank = (int) scoreTable.getValueAt(i,0) - 1;
                         scoreTable.setValueAt(currRank, i, 0);
@@ -129,7 +151,7 @@ public class TablePanel {
                 }
                 userDataList.get(index).setID(retextBar.getText());
                 scoreTable.setValueAt(retextBar.getText(), index, 1);
-                dao.doSave();
+                dao.doSave(gameMode);
             }
         });
     }

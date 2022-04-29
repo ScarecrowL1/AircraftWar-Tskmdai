@@ -28,11 +28,13 @@
                 <properties>
                   <autoCreateRowSorter value="false"/>
                   <autoResizeMode value="2"/>
+                  <enabled value="true"/>
+                  <fillsViewportHeight value="false"/>
                 </properties>
               </component>
             </children>
           </scrollpane>
-          <component id="4739d" class="javax.swing.JLabel">
+          <component id="4739d" class="javax.swing.JLabel" binding="tabelLabel">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -61,7 +63,7 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="如果需要自定义修改ID或删除记录，请先选中行"/>
+                  <text value="如果需要自定义修改某处的ID或删除记录，请先选中行；若要取消选中，请按住Ctrl点击选中的行。"/>
                 </properties>
               </component>
             </children>
@@ -79,7 +81,7 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="忘记提供身份？请在这里输入ID，程序将会自动修改您的记录"/>
+                  <text value="忘记提供身份？无需点击表格，请在这里输入ID，程序将会自动修改您的记录"/>
                 </properties>
               </component>
               <component id="18a89" class="javax.swing.JFormattedTextField" binding="retextBar">

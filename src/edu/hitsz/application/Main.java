@@ -5,6 +5,7 @@ import edu.hitsz.UI.TablePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.InputStream;
 
 /**
  * 程序入口
@@ -16,7 +17,7 @@ public class Main {
     public static final int WINDOW_HEIGHT = 768;
 
     public static final Object LOCK = new Object();
-    //public static final Object LOCK1 = new Object();
+    public static final Object BGM_LOCK = new Object();
 
     public static void main(String[] args) {
 

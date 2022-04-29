@@ -45,5 +45,5 @@ public interface ScoreDAO {
     /**
      * 打印到控制台
      */
-    void printToConsole();
+    void printToConsole(int gameMode);
 }

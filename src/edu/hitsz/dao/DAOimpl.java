@@ -114,9 +114,10 @@ public class DAOimpl implements ScoreDAO {
     }
 
     @Override
-    public void printToConsole() {
+    public void printToConsole(int gameMode) {
+        String dataFile = findUserData(gameMode);
         try {
-            FileReader fileReader = new FileReader("./src/userdata.txt");
+            FileReader fileReader = new FileReader(dataFile);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line =bufferedReader.readLine();
 

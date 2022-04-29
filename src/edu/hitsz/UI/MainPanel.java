@@ -22,6 +22,12 @@ public class MainPanel {
     private static String textUserID =  "username";
 
 
+    /**
+     * 检测用户在第一个界面是否输入了ID数据
+     */
+    private static boolean userTexted = false;
+
+
 /*    public static void main(String[] args) {
         JFrame frame = new JFrame("edu/hitsz/UI");
         frame.setContentPane(new MainPanel().mainPanel);
@@ -104,7 +110,13 @@ public class MainPanel {
             @Override
             public void keyReleased(KeyEvent e) {
                 textUserID = IDtextbar.getText();
+                userTexted = true;
             }
         });
+
+    }
+
+    public static boolean isUserTexted() {
+        return userTexted;
     }
 }

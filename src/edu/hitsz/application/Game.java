@@ -51,6 +51,20 @@ public class Game extends JPanel {
     private boolean gameOverFlag = false;
     private int score = 0;
     private int time = 0;
+    private static boolean bgmStopFlag = false;
+
+    public static boolean isBgmStopFlag() {
+        return bgmStopFlag;
+    }
+
+    MusicThread mainBgm = new MusicThread("src/videos/bgm.wav"){
+        @Override
+        public void run() {
+            while (!isGameOver()) {
+                super.run();
+            }
+        }
+    };
 
     private static int currentScore;
     private static double currentTime;
@@ -61,7 +75,7 @@ public class Game extends JPanel {
     private int cycleDuration = 600;
     private int cycleTime = 0;
 
-    private boolean canBuildBoss = true;
+    private static boolean canBuildBoss = true;
     private int lastScore = 0;
 
 
@@ -73,6 +87,7 @@ public class Game extends JPanel {
         enemyBullets = new LinkedList<>();
         props = new LinkedList<>();
 
+        mainBgm.start();
 
         //Scheduled 线程池，用于定时任务调度
         executorService = new ScheduledThreadPoolExecutor(1);
@@ -112,13 +127,23 @@ public class Game extends JPanel {
                         enemyAircrafts.add(aircraftFactory.createAircraft());
                     }
                     //Boss出现得分阈值，当此时分数大于上次记录时的分数，他们之差大于阈值时，将达成产生boss机的条件之一
-                    int bossScoreThreshold = 100;
+                    int bossScoreThreshold = 200;
                     //初始化lastscore==0，每击败一次boss机，这个数值将记录击败boss机之前的分数
                     if(( (score - lastScore) > bossScoreThreshold) && canBuildBoss){
-                         aircraftFactory = new BossFactory();
-                         enemyAircrafts.add(aircraftFactory.createAircraft());
-                         canBuildBoss = false;
-                         //场上只能有一架Boss机,当boss机被击落时，canBulidBoss将会变为true
+                        aircraftFactory = new BossFactory();
+                        enemyAircrafts.add(aircraftFactory.createAircraft());
+                        MusicThread bossBgm = new MusicThread("src/videos/bgm_boss.wav"){
+                            @Override
+                            public void run() {
+                                do {
+                                    super.run();
+                                } while (!canBuildBoss);
+                            }
+                        };
+                        bossBgm.setBoss(true);
+                        bossBgm.start();
+                        canBuildBoss = false;
+                         //场上只能有一架Boss机,当boss机被击落时，canBuildBoss将会变为true
                     }
                 }
                 // 飞机射出子弹
@@ -143,21 +168,18 @@ public class Game extends JPanel {
             //每个时刻重绘界面
             repaint();
 
+
+
             // 游戏结束检查
             if (heroAircraft.getHp() <= 0) {
                 // 游戏结束
-                /*DAOimpl dao = new DAOimpl();
-                //读入文件数据
-                dao.doRead();
-                //加入本次游戏的数据
-                dao.doAdd(score, time / 1000.0, MainPanel.getTextUserID());
-                //重新进行排列
-                dao.doRank();
-                //保存排列好的数据
-                dao.doSave();*/
+                //存储分数数据用于排行榜接收
                 currentScore = score;
                 currentTime  = (time/1000.0);
                 executorService.shutdown();
+                mainBgm.setStopFlag(true);
+                new MusicThread("src/videos/game_over.wav").start();
+                bgmStopFlag = true;
                 gameOverFlag = true;
                 synchronized (Main.LOCK) {
                     Main.LOCK.notify();
@@ -253,6 +275,8 @@ public class Game extends JPanel {
                 if (enemyAircraft.crash(bullet)) {
                     // 敌机撞击到英雄机子弹
                     // 敌机损失一定生命值
+                    // 播放敌机受击音效
+                    new MusicThread("src/videos/bullet_hit.wav").start();
                     enemyAircraft.decreaseHp(bullet.getPower());
                     bullet.vanish();
                     if (enemyAircraft.notValid()) {
@@ -387,5 +411,9 @@ public class Game extends JPanel {
 
     public static double getCurrentTime() {
         return currentTime;
+    }
+
+    public static boolean isCanBuildBoss() {
+        return canBuildBoss;
     }
 }

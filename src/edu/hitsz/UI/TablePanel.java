@@ -72,6 +72,7 @@ public class TablePanel {
         dao.doAdd(Game.getCurrentScore(), Game.getCurrentTime(), MainPanel.getTextUserID());
         //对所有数据进行排行
         dao.doRank();
+        dao.printToConsole(gameMode);
 
         List<UserData> userDataList = dao.getUserDataList();
         int rank = 0;

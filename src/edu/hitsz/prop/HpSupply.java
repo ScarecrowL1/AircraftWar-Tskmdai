@@ -2,6 +2,7 @@ package edu.hitsz.prop;
 
 import edu.hitsz.aircraft.AbstractAircraft;
 import edu.hitsz.aircraft.HeroAircraft;
+import edu.hitsz.application.MusicThread;
 
 public class HpSupply extends AbstractProp{
 
@@ -14,6 +15,7 @@ public class HpSupply extends AbstractProp{
 
     @Override
     public void activate(HeroAircraft aircraft) {
+        new MusicThread("src/videos/get_supply.wav").start();
         System.out.println("HpSupply Activate");
         aircraft.decreaseHp(-value);
         //加20血

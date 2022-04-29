@@ -20,7 +20,7 @@ public class MainPanel {
     private JPanel textPanel;
     private JFormattedTextField IDtextbar;
     private static String textUserID =  "username";
-
+    private static boolean soundsOn = true;
 
 
     /**
@@ -103,12 +103,8 @@ public class MainPanel {
                 }
             }
         });
-        soundCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-            }
-        });
+
 
         IDtextbar.addKeyListener(new KeyAdapter() {
             @Override
@@ -118,9 +114,25 @@ public class MainPanel {
             }
         });
 
+        //音效开关
+        soundCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(soundCheckBox.isSelected()){
+                    soundsOn = true;
+                }
+                else {
+                    soundsOn = false;
+                }
+            }
+        });
     }
 
     public static boolean isUserTexted() {
         return userTexted;
+    }
+
+    public static boolean isSoundsOn() {
+        return soundsOn;
     }
 }

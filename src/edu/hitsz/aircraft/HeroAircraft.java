@@ -67,11 +67,4 @@ public class HeroAircraft extends AbstractAircraft {
     }
 
 
-    public void setShootNum(int shootNum) {
-        this.shootNum = shootNum;
-    }
-
-    public int getShootNum(){
-        return  shootNum;
-    }
 }

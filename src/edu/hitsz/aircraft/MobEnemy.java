@@ -6,7 +6,6 @@ import edu.hitsz.prop.*;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * 普通敌机

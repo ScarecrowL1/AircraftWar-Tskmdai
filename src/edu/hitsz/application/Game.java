@@ -4,6 +4,7 @@ import edu.hitsz.UI.MainPanel;
 import edu.hitsz.aircraft.*;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
+import edu.hitsz.bullet.EnemyBullet;
 import edu.hitsz.dao.DAOimpl;
 import edu.hitsz.factory.AircraftFactory;
 import edu.hitsz.factory.BossFactory;
@@ -288,10 +289,12 @@ public class Game extends JPanel {
                             //备注：将之前生成道具的代码功能转移到AbstractAircraft类中实现
                         }
                         //当被击毁敌机是Boss时，之后可以重新生成Boss
-                        //此时记录lastscore，重新计算出现阈值
+                        //此时记录lastscore，重新计算是否超过出现阈值
                         if(enemyAircraft instanceof Boss){
                             canBuildBoss = true;
                             lastScore = score;
+                            //击败boss加40分
+                            score += 40;
                         }
                         score += 10;
                     }
@@ -311,6 +314,29 @@ public class Game extends JPanel {
                 continue;
             }
             if(heroAircraft.crash(prop)){
+                //碰撞到炸弹道具
+                if(prop instanceof BombSupply){
+
+                    //将场上敌机子弹加入到观察者
+                    for(BaseBullet bullet : enemyBullets){
+                        if(bullet.notValid()){
+                            continue;
+                        }
+                        ((BombSupply) prop).addBombObject((EnemyBullet)bullet);
+                    }
+
+                    //将场上敌机加入到观察者
+                    for(AbstractAircraft aircraft : enemyAircrafts){
+                        //对于boss机，不生效
+                        if(aircraft.notValid() || (aircraft instanceof Boss)){
+                            continue;
+                        }
+                        ((BombSupply) prop).addBombObject((EnemyAircraft)aircraft);
+                        //爆炸敌机，+10分
+                        score += 10 ;
+                    }
+                }
+                //道具生效
                 prop.activate(heroAircraft);
                 //0408 将道具生效方法转移到道具类
                 prop.vanish();

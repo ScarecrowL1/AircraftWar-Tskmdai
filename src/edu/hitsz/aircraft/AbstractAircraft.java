@@ -82,7 +82,7 @@ public abstract class AbstractAircraft extends AbstractFlyingObject {
             prop = propFactory.createProp(locationX, locationY);
         }
         res.add(prop);
-        return res;
+        return  res;
     }
 
     public void setShootStrategy(ShootStrategy shootStrategy) {

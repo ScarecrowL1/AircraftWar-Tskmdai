@@ -20,6 +20,8 @@ public class Boss extends EnemyAircraft{
         return shootStrategy.doShoot(this, shootNum, power);
     }
 
-
-
+    //boss不爆炸
+    @Override
+    public void explode() {
+    }
 }

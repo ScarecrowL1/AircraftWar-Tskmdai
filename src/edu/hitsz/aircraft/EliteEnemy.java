@@ -36,5 +36,4 @@ public class  EliteEnemy extends EnemyAircraft{
             vanish();
         }
     }
-
 }

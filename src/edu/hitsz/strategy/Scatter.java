@@ -2,6 +2,7 @@ package edu.hitsz.strategy;
 
 import edu.hitsz.aircraft.EnemyAircraft;
 import edu.hitsz.aircraft.HeroAircraft;
+import edu.hitsz.application.Game;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.bullet.EnemyBullet;
 import edu.hitsz.bullet.HeroBullet;
@@ -9,6 +10,12 @@ import edu.hitsz.bullet.HeroBullet;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 散射，并且发射频率为直射的2倍
+ *
+ * @author ScarecrowLi
+ * @date 2022/05/05
+ */
 public class Scatter implements ShootStrategy{
     @Override
     public List<BaseBullet> doShoot(HeroAircraft aircraft, int shootNum, int power) {
@@ -21,9 +28,16 @@ public class Scatter implements ShootStrategy{
         //0324：更改了子弹的速度，原为*5.
         //0415：更改了子弹的速度，上一次为*15
 
+        //英雄机散射子弹威力2倍
+        power *= 2;
+
         int cnt = 0;
         //offset:偏移量
         int offset = 3;
+
+        //英雄机散射时，发射频率为正常值的二分之一
+        Game.setHeroShootDuration(Game.getInhanceDuration());
+
         for(int i=0; i<shootNum; i++) {
             speedX = 0;
             if(shootNum > 2){

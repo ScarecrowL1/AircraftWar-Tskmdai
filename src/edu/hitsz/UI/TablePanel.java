@@ -1,6 +1,7 @@
 package edu.hitsz.UI;
 
 import edu.hitsz.application.Game;
+import edu.hitsz.application.Main;
 import edu.hitsz.dao.DAOimpl;
 import edu.hitsz.dao.UserData;
 
@@ -28,7 +29,8 @@ public class TablePanel {
 
     private int currentIndex;
     private boolean needSaved;
-    private static int gameMode;
+
+    private int gameMode = Main.gameMode;
 
 /*    public static void main(String[] args) {
         JFrame frame = new JFrame("TablePanel");
@@ -162,7 +164,4 @@ public class TablePanel {
         return tablePanel;
     }
 
-    public static void setGameMode(int gameMode) {
-        TablePanel.gameMode = gameMode;
-    }
 }

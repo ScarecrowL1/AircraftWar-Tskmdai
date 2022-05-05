@@ -17,7 +17,8 @@ public class Main {
     public static final int WINDOW_HEIGHT = 768;
 
     public static final Object LOCK = new Object();
-    public static final Object BGM_LOCK = new Object();
+
+    public static int gameMode = 0;
 
     public static void main(String[] args) {
 
@@ -51,6 +52,16 @@ public class Main {
         frame.remove(mainPanel);
 
         Game game = new Game();
+        if(gameMode == 0){
+            game = new EasyGame();
+        }
+        if(gameMode == 1){
+            game = new NomalGame();
+        }
+        if(gameMode == 2){
+            game = new HardGame();
+        }
+
         frame.setContentPane(game);
         frame.setVisible(true);
         game.action();
@@ -71,5 +82,9 @@ public class Main {
         frame.setSize(1024, WINDOW_HEIGHT);
         frame.setVisible(true);
 
+    }
+
+    public static void setGameMode(int gameMode) {
+        Main.gameMode = gameMode;
     }
 }

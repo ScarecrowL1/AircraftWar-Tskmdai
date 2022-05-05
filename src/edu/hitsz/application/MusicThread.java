@@ -66,7 +66,7 @@ public class MusicThread extends Thread {
 
     public void play(InputStream source) {
 
-        if (!stopFlag) {
+        if (!(stopFlag || Game.isBgmStopFlag())) {
             int size = (int) (audioFormat.getFrameSize() * audioFormat.getSampleRate());
             byte[] buffer = new byte[size];
             //源数据行SoureDataLine是可以写入数据的数据行
@@ -86,7 +86,7 @@ public class MusicThread extends Thread {
                 while (numBytesRead != -1) {
                     //如果是boss音效则检查boss是否被击毁，被击毁，则stopFlag为true
                     if(isBoss){
-                        stopFlag = Game.isCanBuildBoss() || Game.isBgmStopFlag();
+                        stopFlag = (Game.isCanBuildBoss() || Game.isBgmStopFlag());
                     }
                     //从音频流读取指定的最大数量的数据字节，并将其放入缓冲区中
                     numBytesRead =
@@ -96,7 +96,7 @@ public class MusicThread extends Thread {
                         dataLine.write(buffer, 0, numBytesRead);
                     }
                     //传入信号，则停止播放
-                    if(stopFlag){
+                    if(stopFlag || Game.isBgmStopFlag()){
                         break;
                     }
                 }

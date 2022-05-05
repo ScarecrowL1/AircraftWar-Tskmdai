@@ -8,8 +8,11 @@ import edu.hitsz.strategy.Straight;
 import java.util.List;
 
 /**
+ * 英雄飞机
  * 英雄飞机，游戏玩家操控
+ *
  * @author hitsz
+ * @date 2022/05/04
  */
 public class HeroAircraft extends AbstractAircraft {
 
@@ -17,11 +20,14 @@ public class HeroAircraft extends AbstractAircraft {
 
     /** 攻击方式 */
     private int shootNum = 3;
-    //子弹一次发射数量，为了方便助检查作业改成了3发
+    /**
+     * 英雄机子弹伤害
+     */
     private int power = 30;
-    //子弹伤害
+    /**
+     * 方向
+     */
     private int direction = -1;
-    //子弹射击方向 (向上发射：1，向下发射：-1)
 
     /**
      * @param locationX 英雄机位置x坐标
@@ -34,7 +40,12 @@ public class HeroAircraft extends AbstractAircraft {
         super(locationX, locationY, speedX, speedY, hp);
     }
 
-    //单例模式创建英雄级（双重检查锁定）
+
+    /**
+     * 单例模式创建英雄机
+     *
+     * @return {@link HeroAircraft}
+     */
     public static HeroAircraft getHeroAircraft(){
         if (heroAircraft == null){
             synchronized (HeroAircraft.class){
@@ -57,14 +68,17 @@ public class HeroAircraft extends AbstractAircraft {
         // 英雄机由鼠标控制，不通过forward函数移动
     }
 
-    @Override
     /**
-     * 通过射击产生子弹
-     * @return 射击出的子弹List
+     * 射击
+     *
+     * @return {@link List}<{@link BaseBullet}>
      */
+    @Override
     public List<BaseBullet> shoot() {
         return shootStrategy.doShoot(heroAircraft, shootNum, power);
     }
 
-
+    public void setShootNum(int shootNum) {
+        this.shootNum = shootNum;
+    }
 }

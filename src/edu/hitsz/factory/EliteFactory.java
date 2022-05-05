@@ -13,6 +13,12 @@ import edu.hitsz.strategy.Straight;
  * @date 2022/04/28
  */
 public class EliteFactory implements AircraftFactory{
+
+    /**
+     * 普通模式默认血量60
+     */
+    int hp = 60;
+
     @Override
     public AbstractAircraft createAircraft() {
         EliteEnemy eliteEnemy = new EliteEnemy(
@@ -20,8 +26,16 @@ public class EliteFactory implements AircraftFactory{
                 (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2)*1,
                 2,
                 2,
-                60);
+                hp);
         eliteEnemy.setShootStrategy(new Straight());
         return eliteEnemy;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public int getHp() {
+        return hp;
     }
 }

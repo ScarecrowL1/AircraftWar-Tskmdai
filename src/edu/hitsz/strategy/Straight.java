@@ -2,6 +2,7 @@ package edu.hitsz.strategy;
 
 import edu.hitsz.aircraft.EnemyAircraft;
 import edu.hitsz.aircraft.HeroAircraft;
+import edu.hitsz.application.Game;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.bullet.EnemyBullet;
 import edu.hitsz.bullet.HeroBullet;
@@ -22,6 +23,9 @@ public class Straight implements ShootStrategy{
         int speedY = aircraft.getSpeedY() + direction*20;
         //0324：更改了子弹的速度，原为*5.
         //0415：更改了子弹的速度，上一次为*15
+
+        //英雄机直射时，使用默认频率
+        Game.setHeroShootDuration(Game.getRuleDuration());
 
         //生成子弹，
         for(int i=0; i<shootNum; i++) {

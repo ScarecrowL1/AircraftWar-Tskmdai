@@ -1,12 +1,9 @@
 package edu.hitsz.application;
 
-import edu.hitsz.UI.MainPanel;
 import edu.hitsz.aircraft.*;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.bullet.EnemyBullet;
-import edu.hitsz.dao.DAOimpl;
-import edu.hitsz.factory.AircraftFactory;
 import edu.hitsz.factory.BossFactory;
 import edu.hitsz.factory.EliteFactory;
 import edu.hitsz.factory.MobFactory;
@@ -38,16 +35,20 @@ public class Game extends JPanel {
      */
     private int timeInterval = 40;
 
-    private final HeroAircraft heroAircraft;
+    protected final HeroAircraft heroAircraft;
     private final List<AbstractAircraft> enemyAircrafts;
     private final List<BaseBullet> heroBullets;
     private final List<BaseBullet> enemyBullets;
     private final List<AbstractProp> props;
 
-    AircraftFactory aircraftFactory;
-    //飞机工厂
+    protected MobFactory mobFactory = new MobFactory();
+    protected EliteFactory eliteFactory = new EliteFactory();
+    protected BossFactory bossFactory = new BossFactory();
 
     private int enemyMaxNumber = 5;
+    public void setEnemyMaxNumber(int enemyMaxNumber) {
+        this.enemyMaxNumber = enemyMaxNumber;
+    }
 
     private boolean gameOverFlag = false;
     private int score = 0;
@@ -69,14 +70,90 @@ public class Game extends JPanel {
 
     private static int currentScore;
     private static double currentTime;
+
+
     /**
      * 周期（ms)
      * 指示子弹的发射、敌机的产生频率
      */
-    private int cycleDuration = 600;
-    private int cycleTime = 0;
+    private int enemyCycleDuration = 600;
+    private int enemyCycleTime = 0;
 
+    public void setEnemyCycleDuration(int enemyCycleDuration) {
+        this.enemyCycleDuration = enemyCycleDuration;
+    }
+
+
+    /**
+     * 把英雄的射击频率从原来的频率中独立出来
+     * 周期（ms）
+     */
+    private static int heroShootDuration = 600;
+    /**
+     * 设定上的射击周期（直射）
+     */
+    private static int ruleDuration;
+    /**
+     * 增强的射击周期（散射）
+     */
+    private static int inhanceDuration;
+    private int heroCycleTime = 0;
+
+    public static void setRuleDuration(int duration) {
+        Game.ruleDuration = duration;
+        Game.inhanceDuration = duration/2;
+    }
+
+    public static int getRuleDuration() {
+        return ruleDuration;
+    }
+
+    public static int getInhanceDuration() {
+        return inhanceDuration;
+    }
+
+    public static void setHeroShootDuration(int heroShootDuration) {
+        Game.heroShootDuration = heroShootDuration;
+    }
+
+
+    /**
+     * 允许生成Boss机的检查标志
+     */
     private static boolean canBuildBoss = true;
+
+    public static void setCanBuildBoss(boolean canBuildBoss) {
+        Game.canBuildBoss = canBuildBoss;
+    }
+
+
+    /**
+     * 生成精英机的概率
+     */
+    private double prElite = 0.1;
+
+    public void setPrElite(double prElite) {
+        if(prElite < 1) {
+            this.prElite = prElite;
+        }
+        else {
+            this.prElite = 1;
+        }
+    }
+
+    public double getPrElite() {
+        return prElite;
+    }
+
+    /**
+     * Boss出现得分阈值，当此时分数大于上次记录时的分数，他们之差大于阈值时，将达成产生boss机的条件之一
+     */
+    private int bossScoreThreshold = 200;
+
+    public void setBossScoreThreshold(int bossScoreThreshold) {
+        this.bossScoreThreshold = bossScoreThreshold;
+    }
+
     private int lastScore = 0;
 
 
@@ -101,7 +178,7 @@ public class Game extends JPanel {
     /**
      * 游戏启动入口，执行游戏逻辑
      */
-    public void action() {
+    public final void action() {
 
 
         // 定时任务：绘制、对象产生、碰撞判定、击毁及结束判定
@@ -114,41 +191,22 @@ public class Game extends JPanel {
                 System.out.println(time);
                 // 新敌机产生
                 if (enemyAircrafts.size() < enemyMaxNumber) {
-
-
-                    //生成普通机
-                    aircraftFactory = new MobFactory();
-                    enemyAircrafts.add(aircraftFactory.createAircraft());
-
-                    //开始决定是否生成精英机
-                    double prElite = 0.4;
-                    //prElite:产生精英敌机的概率
-                    if(Math.random() < prElite){
-                        aircraftFactory = new EliteFactory();
-                        enemyAircrafts.add(aircraftFactory.createAircraft());
-                    }
-                    //Boss出现得分阈值，当此时分数大于上次记录时的分数，他们之差大于阈值时，将达成产生boss机的条件之一
-                    int bossScoreThreshold = 200;
-                    //初始化lastscore==0，每击败一次boss机，这个数值将记录击败boss机之前的分数
-                    if(( (score - lastScore) > bossScoreThreshold) && canBuildBoss){
-                        aircraftFactory = new BossFactory();
-                        enemyAircrafts.add(aircraftFactory.createAircraft());
-                        MusicThread bossBgm = new MusicThread("src/videos/bgm_boss.wav"){
-                            @Override
-                            public void run() {
-                                do {
-                                    super.run();
-                                } while (!canBuildBoss);
-                            }
-                        };
-                        bossBgm.setBoss(true);
-                        bossBgm.start();
-                        canBuildBoss = false;
-                         //场上只能有一架Boss机,当boss机被击落时，canBuildBoss将会变为true
-                    }
+                    //添加普通机和精英机
+                    addMobElite();
+                    addBoss();
                 }
-                // 飞机射出子弹
-                shootAction();
+                // 敌机射出子弹
+                enemyShoot();
+            }
+
+            if(heroShootCountJudge()){
+                //英雄机射出子弹
+                heroShoot();
+            }
+
+            //每五秒增加难度
+            if(time % 5000 == 0){
+                hardUp();
             }
 
             // 子弹移动
@@ -203,24 +261,79 @@ public class Game extends JPanel {
     //***********************
 
     private boolean timeCountAndNewCycleJudge() {
-        cycleTime += timeInterval;
-        if (cycleTime >= cycleDuration && cycleTime - timeInterval < cycleTime) {
+        enemyCycleTime += timeInterval;
+        if (enemyCycleTime >= enemyCycleDuration && enemyCycleTime - timeInterval < enemyCycleTime) {
             // 跨越到新的周期
-            cycleTime %= cycleDuration;
+            enemyCycleTime %= enemyCycleDuration;
             return true;
         } else {
             return false;
         }
     }
 
-    private void shootAction() {
-        // TODO 敌机射击 done
+    private boolean heroShootCountJudge(){
+        heroCycleTime += timeInterval;
+        if (heroCycleTime >= heroShootDuration && heroCycleTime - timeInterval < heroCycleTime) {
+            // 跨越到新的周期
+            heroCycleTime %= heroShootDuration;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void hardUp(){
+        System.out.println("增加难度");
+    }
+
+    /**
+     * 添加普通机和精英机
+     */
+    public void addMobElite(){
+        //生成普通机
+        enemyAircrafts.add(mobFactory.createAircraft());
+
+        //开始决定是否生成精英机
+        //prElite:产生精英敌机的概率
+        if(Math.random() < prElite) {
+            enemyAircrafts.add(eliteFactory.createAircraft());
+        }
+    }
+
+    /**
+     * 添加Boss
+     */
+    public void addBoss(){
+
+        //初始化lastscore==0，每击败一次boss机，这个数值将记录击败boss机之前的分数
+        if(( (score - lastScore) > bossScoreThreshold) && canBuildBoss){
+            enemyAircrafts.add(bossFactory.createAircraft());
+            MusicThread bossBgm = new MusicThread("src/videos/bgm_boss.wav"){
+                @Override
+                public void run() {
+                    do {
+                        super.run();
+                    } while (!canBuildBoss);
+                }
+            };
+            bossBgm.setBoss(true);
+            bossBgm.start();
+            canBuildBoss = false;
+            //场上只能有一架Boss机,当boss机被击落时，canBuildBoss将会变为true
+        }
+    }
+
+    private void heroShoot() {
+        // 英雄射击
+        heroBullets.addAll(heroAircraft.shoot());
+    }
+
+    private void enemyShoot(){
+
         for(AbstractAircraft enemy: enemyAircrafts){
             //0325
             enemyBullets.addAll(enemy.shoot());
         }
-        // 英雄射击
-        heroBullets.addAll(heroAircraft.shoot());
     }
 
     private void bulletsMoveAction() {
@@ -291,10 +404,7 @@ public class Game extends JPanel {
                         //当被击毁敌机是Boss时，之后可以重新生成Boss
                         //此时记录lastscore，重新计算是否超过出现阈值
                         if(enemyAircraft instanceof Boss){
-                            canBuildBoss = true;
-                            lastScore = score;
-                            //击败boss加40分
-                            score += 40;
+                            bossCrash();
                         }
                         score += 10;
                     }
@@ -342,6 +452,16 @@ public class Game extends JPanel {
                 prop.vanish();
             }
         }
+    }
+
+    /**
+     * 进行Boss坠毁后的操作
+     */
+    public void bossCrash(){
+        canBuildBoss = true;
+        lastScore = score;
+        //击败boss加40分
+        score += 40;
     }
 
     /**
@@ -441,5 +561,9 @@ public class Game extends JPanel {
 
     public static boolean isCanBuildBoss() {
         return canBuildBoss;
+    }
+
+    public int getTime() {
+        return time;
     }
 }

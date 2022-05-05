@@ -6,7 +6,7 @@ import edu.hitsz.application.MusicThread;
 
 public class HpSupply extends AbstractProp{
 
-    private int value = 20;
+    private final int value = 50;
     //增加的血量
 
     public HpSupply(int locationX, int locationY, int speedX, int speedY) {

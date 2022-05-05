@@ -62,7 +62,7 @@ public class MainPanel {
                     ex.printStackTrace();
                 }
                 //简单模式
-                TablePanel.setGameMode(0);
+                Main.setGameMode(0);
                 mainPanel.setVisible(false);
                 synchronized (Main.LOCK) {
                     Main.LOCK.notify();
@@ -79,7 +79,7 @@ public class MainPanel {
                     ex.printStackTrace();
                 }
                 //普通模式
-                TablePanel.setGameMode(1);
+                Main.setGameMode(1);
                 mainPanel.setVisible(false);
                 synchronized (Main.LOCK) {
                     Main.LOCK.notify();
@@ -96,7 +96,7 @@ public class MainPanel {
                     ex.printStackTrace();
                 }
                 //困难模式
-                TablePanel.setGameMode(2);
+                Main.setGameMode(2);
                 mainPanel.setVisible(false);
                 synchronized (Main.LOCK) {
                     Main.LOCK.notify();

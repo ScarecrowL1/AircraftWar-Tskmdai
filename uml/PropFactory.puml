@@ -14,8 +14,8 @@ AbstractProp <|-- HpSupply
 AbstractProp <|-- BombSupply
 AbstractProp <|-- FireSupply
 
-game ..|> PropFactory
-game ..|> AbstractProp
+Game ..|> PropFactory
+Game ..|> AbstractProp
 
 class HpSupply{
     + HpSupply(int locationX, int locationY, int speedX, int speedY)

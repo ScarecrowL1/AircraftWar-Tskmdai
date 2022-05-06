@@ -1,7 +1,7 @@
 package edu.hitsz.application;
 
-public class NomalGame extends Game{
-    public NomalGame() {
+public class NormalGame extends Game{
+    public NormalGame() {
 
         //设置产生boss阈值为500分
         setBossScoreThreshold(500);

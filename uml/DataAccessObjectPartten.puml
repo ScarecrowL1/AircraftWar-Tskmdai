@@ -4,10 +4,11 @@
 
 
 interface ScoreDAO{
-    + doAdd(int score, double time):void
-    + doSave():void
-    + doRead():void
-    + doRank():void
+    + doAdd(int score, double time, String ID):void
+        + doSave(int gameMode):void
+        + doRead():void
+        + doRank(int gameMode)):void
+        + doDelete():void
     + printToConsole():void
 
 }
@@ -16,17 +17,20 @@ interface ScoreDAO{
 
 ScoreDAO <|.. DAOimpl
 UserData <-- DAOimpl
-game ..> ScoreDAO
+Game ..> ScoreDAO
 
 
 
 class DAOimpl {
     - userdata:List<UserData>
-    + doAdd(int score, double time):void
-    + doSave():void
+    + doAdd(int score, double time, String ID):void
+    + doSave(int gameMode):void
     + doRead():void
-    + doRank():void
+    + doRank(int gameMode)):void
+    + doDelete():void
     + printToConsole():void
+    + getUsetDateList(): List<UserData>
+    + findUserData(int gameMode):String
 
 }
 

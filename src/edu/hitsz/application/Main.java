@@ -5,7 +5,6 @@ import edu.hitsz.UI.TablePanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.InputStream;
 
 /**
  * 程序入口
@@ -56,7 +55,7 @@ public class Main {
             game = new EasyGame();
         }
         if(gameMode == 1){
-            game = new NomalGame();
+            game = new NormalGame();
         }
         if(gameMode == 2){
             game = new HardGame();

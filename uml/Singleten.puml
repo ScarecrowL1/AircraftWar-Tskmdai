@@ -3,7 +3,7 @@
 
 
 
-game ..|> HeroAircraft
+Game ..|> HeroAircraft
 HeroAircraft --|> HeroAircraft
 
 class HeroAircraft {
@@ -17,7 +17,7 @@ class HeroAircraft {
     + {static}getHeroAircraft():HeroAircraft
 }
 
-class game
+class Game
 
 
 @enduml

@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Game
+class BombSupply{
+- List<ExplodeObject> explodeObjectList
++ addBombObject():void
++ notifyBombObject():void
+}
+interface ExplodeObject{
++explode():void
+}
+class EnemyBullet{
++explode():void
+}
+abstract class EnemyAircraft{
++explode():void
+}
+
+Game --> BombSupply
+Game ..> EnemyBullet
+Game ..> EnemyAircraft
+
+EnemyAircraft --|> ExplodeObject
+EnemyBullet --|> ExplodeObject
+
+BombSupply o--> ExplodeObject
+
+@enduml

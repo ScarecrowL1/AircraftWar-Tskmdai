@@ -131,7 +131,9 @@ public class TablePanel {
                     dao.doDelete(dateInfo);
                     //重新排序并保存到本地
                     dao.doRank();
-                    dao.doSave(gameMode);
+                    if (needSaved) {
+                        dao.doSave(gameMode);
+                    }
                     model.removeRow(deleteRow);
                     //在表层显示上，再被删除元素一下的数据排名+1
                     for (int i =  deleteRow; i < scoreTable.getRowCount(); i++){
@@ -154,7 +156,9 @@ public class TablePanel {
                 }
                 userDataList.get(index).setID(retextBar.getText());
                 scoreTable.setValueAt(retextBar.getText(), index, 1);
-                dao.doSave(gameMode);
+                if (needSaved) {
+                    dao.doSave(gameMode);
+                }
             }
         });
     }

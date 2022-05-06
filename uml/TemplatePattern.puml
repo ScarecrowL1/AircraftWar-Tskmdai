@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Game{
++action():void
++hardUp():void
++bossCrash():void
+}
+
+class EasyGame{
++hardUp():void
+}
+class NormalGame{
++hardUp():void
+}
+class HardGame{
++hardUp():void
++bossCrash():void
+}
+
+EasyGame --|> Game
+NormalGame --|> Game
+HardGame --|> Game
+@enduml

@@ -8,15 +8,21 @@ interface AircraftFactory{
 
 AbstractAircraft <|-- MobEnemy
 AbstractAircraft <|-- EliteEnemy
+AbstractAircraft <|-- Boss
 
 
-AircraftFactory <|-- MobFactory
-AircraftFactory <|-- EliteFactory
+AircraftFactory <|.. MobFactory
+AircraftFactory <|.. EliteFactory
+AircraftFactory <|.. BossFactory
 
-game ..|> AircraftFactory
-game ..|> AbstractAircraft
+game ..> AircraftFactory
+game --> AbstractAircraft
 
-class game
+class game{
+    + addBoss():void
+    + addMobAndElite():void
+
+}
 
 class MobEnemy {
     + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
@@ -33,13 +39,28 @@ class EliteEnemy{
     +forward()
 }
 
+class Boss{
+    -shootNum
+    -power
+    -direction
+    +EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    +shoot():List<BaseBullet>
+    +forward()
+}
+
 
 class EliteFactory {
++ sethp(int hp)():void
 + createAircraft():AbstractAircraft
 }
 
 class MobFactory{
++ sethp(int hp)():void
 + createAircraft():AbstractAircraft
 }
 
+class BossFactory{
++ sethp(int hp)():void
++ createAircraft():AbstractAircraft
+}
 @enduml

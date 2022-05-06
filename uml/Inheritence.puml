@@ -46,7 +46,7 @@ abstract class BaseBullet
 abstract class AbstractProp{
     +AbstractProp(int locationX, int locationY, int speedX, int speedY)
     +forward():void
-    +{abstract} activate (AbstractAircraft):void
+    +{abstract} activate (AbstractAircraft aircraft):void
 
 }
 
@@ -98,6 +98,9 @@ class EliteEnemy{
 }
 
 class Boss{
+    -shootNum
+    -power
+    -direction
     +Boss(int locationX, int locationY, int speedX, int speedY, int hp)
     +shoot():List<BaseBullet>
 }
@@ -114,14 +117,17 @@ class EnemyBullet {
 
 class HpSupply{
     + HpSupply(int locationX, int locationY, int speedX, int speedY)
+    + activate (AbstractAircraft aircraft):void
 }
 
 class BombSupply{
     + BombSupply(int locationX, int locationY, int speedX, int speedY)
+    + activate (AbstractAircraft aircraft):void
 }
 
 class FireSupply{
     + FireSupply(int locationX, int locationY, int speedX, int speedY)
+    + activate (AbstractAircraft aircraft):void
 }
 
 @enduml
